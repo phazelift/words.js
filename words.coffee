@@ -160,8 +160,8 @@ class Words extends Strings
 		return @
 
 	prepend: ->
-		for arg in arguments
- 			@words.unshift Str.trim( arg ) if ('' isnt arg= _.forceString arg)
+		for arg, count in arguments
+ 			@words.splice count, 0, Str.trim( arg ) if ('' isnt arg= _.forceString arg)
 		return @
 
 	insert: ( index, words... ) ->

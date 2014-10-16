@@ -9,7 +9,11 @@ Where in strings.js you use shuffle to randomly reorder the characters in a stri
 shuffle function randomly reorders the words in a string. This same idea applies to pretty much all methods of
 words.js, although some methods like .upper() and .lower(), combine word and character based manipulation.
 <br/><br/>
+All indexes in words.js are 1 based. Negative indexes can be used in most functions. -1 references the last
+word in the internal words array, 1 references the first word.
 
+The `new Words()` object is made for chaining operations on words in strings, most of it's methods return their
+own context. To return the actual value of the internal string/array, one can use `.get()` or `.$` or `.string`.
 ___
 You can use `npm install words.js` when using node.js. The dependant strings.js and included types.js will
 automatically be installed as well.
@@ -43,15 +47,15 @@ API
 > Use any combination of arguments to form a string. All invalid arguments will be ignored.
 
 ```javascript
-var words= new Words('numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..');
-// numbers accepted 123 not objects, arrays etc.. they are simply ignored..
+var words= new Words('numbers and strings accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..');
+console.log( words.$ );
+// numbers and strings accepted 123 not objects, arrays etc.. they are simply ignored..
 ```
 
 **Words.prototype.count**
 > `count`
 
 > A getter to get the amount of words in the internal array.
-
 
 **Words.prototype.set**
 > `<this> set( <string>/<number> index, [index1, ..., indexN] )`
@@ -61,8 +65,9 @@ var words= new Words('numbers accepted', 123, 'not objects, arrays etc..', {}, [
 
 ```javascript
 var words= new Words();
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
-// numbers accepted 123 not objects, arrays etc.. they are simply ignored..
+words.set( 'numbers and strings accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
+console.log( words.$ );
+// numbers and strings accepted 123 not objects, arrays etc.. they are simply ignored..
 ```
 
 **Words.prototype.get**
@@ -253,7 +258,7 @@ console.log( words.shift(3).$ );
 
 ```javascript
 var words= new Words( 'words is fun!' );
-console.log( words.unshift('of', 'testing', 'serious').$ );
+console.log( words.unshift('serious', 'testing', 'of').$ );
 // serious testing of words is fun!
 ```
 

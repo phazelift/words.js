@@ -325,11 +325,11 @@
     };
 
     Words.prototype.prepend = function() {
-      var arg, _i, _len;
-      for (_i = 0, _len = arguments.length; _i < _len; _i++) {
-        arg = arguments[_i];
+      var arg, count, _i, _len;
+      for (count = _i = 0, _len = arguments.length; _i < _len; count = ++_i) {
+        arg = arguments[count];
         if ('' !== (arg = _.forceString(arg))) {
-          this.words.unshift(Str.trim(arg));
+          this.words.splice(count, 0, Str.trim(arg));
         }
       }
       return this;
