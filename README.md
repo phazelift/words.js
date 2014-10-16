@@ -36,7 +36,7 @@ API
 ---
 
 **Words.prototype.constructor**
-> `<this> constructor( <string>/<number> string= '', <string>/<number> delimiter= ' ' )`
+> `<this> constructor( <string>/<number> string= '' )`
 
 > Initializes the contextual object.
 
