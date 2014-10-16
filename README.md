@@ -47,6 +47,12 @@ var words= new Words('numbers accepted', 123, 'not objects, arrays etc..', {}, [
 // numbers accepted 123 not objects, arrays etc.. they are simply ignored..
 ```
 
+**Words.prototype.count**
+> `count`
+
+> A getter to get the amount of words in the internal array.
+
+
 **Words.prototype.set**
 > `<this> set( <string>/<number> index, [index1, ..., indexN] )`
 
@@ -69,6 +75,15 @@ words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 't
 words.get( 1, 2, 6, -1 );
 // numbers accepted arrays ignored..
 ```
+**Words.prototype.$**
+> `$`
+
+> A getter for .get()
+
+**Words.prototype.string**
+> `string`
+
+> Another getter for .get(), similar to .$.
 
 **Words.prototype.xs**
 > `<this> xs( <function> callback(<string> word, <number> index) )`
