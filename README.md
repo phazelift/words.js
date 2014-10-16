@@ -48,7 +48,7 @@ var words= new Words('numbers accepted', 123, 'not objects, arrays etc..', {}, [
 ```
 
 **Words.prototype.set**
-> `<string> set( <string>/<number> index, [index1, ..., indexN] )`
+> `<this> set( <string>/<number> index, [index1, ..., indexN] )`
 
 > Set the internal array. Use any combination of arguments to form a string. All
 > invalid arguments will be ignored.
