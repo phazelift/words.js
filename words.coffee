@@ -1,8 +1,6 @@
-# words.coffee - My Javascript word/string manipulation library, written in Coffeescript.
+# words.coffee - A Javascript word-string manipulation library, written in Coffeescript.
 #
-#		Experimental and under development, things will change, use with care.
-#
-#		Depends on my strings.js library
+# Depends on strings.js (https://github.com/phazelift/strings.js.git).
 #
 # Copyright (c) 2014 Dennis Raymondo van der Sluis
 #
@@ -23,6 +21,30 @@
 
 Strings= Str= _= require 'strings.js'
 
+removeDupAndFlip= ( array ) ->
+	length= array.length- 1
+	newArr= []
+	for index in [length..0]
+		newArr.push array[ index ] if newArr[ newArr.length- 1 ] isnt array[ index ]
+	return newArr
+
+insertSort= ( array ) ->
+	length= array.length- 1
+	for index in [1..length]
+		current	= array[index]
+		prev		= index- 1
+		while (prev >= 0) && (array[prev] > current)
+			array[prev+1]= array[prev]
+			--prev
+		array[+prev+1]= current
+	return array
+
+objectToArray= ( object ) ->
+	array= []
+	array.push data for key, data of object
+	return array
+
+
 # call with context!
 changeCase= ( method, args ) ->
 	if _.isString args?[0] then @set Str[ method ] @$, args...		# strings
@@ -35,6 +57,8 @@ changeCase= ( method, args ) ->
 			pos= _.positiveIndex pos, @count
 			@words[ pos ]= Str[ method ] @words[ pos ]
 
+
+applyToValidIndex= ( orgIndex, limit, callback ) => callback( index ) if false isnt index= _.positiveIndex orgIndex, limit
 
 delimiter= ' '
 class Words extends Strings
@@ -67,28 +91,26 @@ class Words extends Strings
 			if response= callback( word, index )
 				if response is true then result.push word
 				else if _.isStringOrNumber response
-					result.push response
+					result.push response+ ''
 		@words= result
 		return @
 
-	find: ( string, showPositions ) ->
+	find: ( string ) ->
 		indices= []
-		if '' isnt string= Str.force string
+		if '' isnt string= _.forceString string
 			@xs ( word, index ) ->
-				for position in Str.find word, string
-					if showPositions then indices.push [index+ 1, position]
-					else indices.push index+ 1
+				indices.push(index+ 1) if word is string
+				return true
 		return indices
-
-	applyToValidIndex: ( orgIndex, callback ) ->	callback( index ) if false isnt index= _.positiveIndex orgIndex, @count; @
 
 	upper: -> changeCase.call @, 'upper', Array::slice.call arguments; @
 	lower: -> changeCase.call @, 'lower', Array::slice.call arguments; @
 
 	reverse: ->
+		console.log 'from words: ', arguments
 		if arguments?[0] is 0 then @xs ( word ) -> Str.reverse word
 		else if arguments.length > 0 then for arg in arguments
-			@applyToValidIndex arg, ( index ) => @words[ index ]= Str.reverse @words[ index ]
+			applyToValidIndex arg, @count, ( index ) => @words[ index ]= Str.reverse @words[ index ]
 		else @set Str.reverse @$
 		return @
 
@@ -100,7 +122,7 @@ class Words extends Strings
 					return true
 			else if selection is 0
 				@xs ( word ) -> Str.shuffle word
-			else for arg in arguments then @applyToValidIndex arg, ( index ) =>
+			else for arg in arguments then applyToValidIndex arg, @count, ( index ) =>
 				@words[ index ]= Str.shuffle @words[ index ]
 		else @words= _.shuffleArray @words
 		return @
@@ -109,41 +131,60 @@ class Words extends Strings
 
 	remove: ->
 		return @ if arguments.length < 1
-		return @clear() if arguments?[0] is 0
+		args= []
 		for arg in arguments
-			if _.isString arg then @xs ( word ) -> true if word isnt arg
-			else @xs ( word ) => true if word isnt @words[ _.positiveIndex arg, @count ]
+			if _.isString arg
+				args.unshift arg
+			else if _.isNumber arg
+				args.push Words.positiveIndex arg, @count
+		args= removeDupAndFlip insertSort args
+		for arg, index in args
+			if _.isNumber arg
+				@xs ( word, index ) => true if index isnt arg
+			else if _.isString arg then @xs ( word ) -> true if word isnt arg
 		return @
 
-	pop: ( amount= 1 ) -> @words.pop() for n in [ 1..amount ];	@
+	pop: ( amount ) ->
+		amount= _.forceNumber amount, 1
+		@words.pop() for n in [ 1..amount ]
+		return @
 
 	push: ->
 		for arg in arguments
-			@words.push Str.trim( arg ) if _.isStringOrNumber arg
+			@words.push Str.trim( arg ) if ('' isnt arg= _.forceString arg)
 		return @
 
-	shift: ( amount= 1 ) ->	@words.shift() for n in [1..amount]; @
+	shift: ( amount ) ->
+		amount= _.forceNumber amount, 1
+		@words.shift() for n in [1..amount]
+		return @
 
 	prepend: ->
 		for arg in arguments
- 			@words.unshift Str.trim( arg ) if _.isStringOrNumber arg
+ 			@words.unshift Str.trim( arg ) if ('' isnt arg= _.forceString arg)
 		return @
 
 	insert: ( index, words... ) ->
-		return @prepend( arguments... ) if _.isString index
-		@words.splice( index, 0, Str.trim word )	for word in words
+		index= _.positiveIndex index, @count
+		for word, count in words
+			@words.splice( index+ count, 0, Str.trim word ) if ('' isnt word= _.forceString word)
 		return @
 
 	replace: ( selection, replacement= '' ) ->
 		return @ if '' is replacement= Str.trim replacement
 		if _.isNumber selection
-			@applyToValidIndex selection, ( index ) => @words.splice( index, 1, replacement )
+			applyToValidIndex selection, @count, ( index ) => @words.splice index, 1, replacement
 		else @xs ( word ) ->
 			return replacement if word is selection
 			return true
 		return @
 
+	sort: -> insertSort @words; @
+
 Words::unshift= Words::prepend
+Words.Strings= Strings
+Words.Types	= Strings.Types
+Words.Chars = Strings.Chars
 
 return window.Words if window?
 return module.exports= Words if module
