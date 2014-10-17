@@ -57,6 +57,12 @@ console.log( words.$ );
 
 > A getter to get the amount of words in the internal array.
 
+```javascript
+var words= new Words('word counting included');
+console.log( words.count );
+// 3
+```
+
 **Words.prototype.set**
 > `<this> set( <string>/<number> index, [index1, ..., indexN] )`
 
@@ -76,14 +82,20 @@ console.log( words.$ );
 > Returns the word(s) found at index(es).
 
 ```javascript
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
-words.get( 1, 2, 6, -1 );
-// numbers accepted arrays ignored..
+var words= new Words('we can be very specific and pick any word we need');
+words.get( 5, -1 );
+// specific need
 ```
 **Words.prototype.$**
 > `$`
 
 > A getter for .get()
+
+```javascript
+var words= new Words('fetch the whole string with a getter');
+console.log( words.$ );
+// fetch the whole string with a getter
+```
 
 **Words.prototype.string**
 > `string`
@@ -101,18 +113,22 @@ words.get( 1, 2, 6, -1 );
 > will be applied to index in the internal array.
 
 ```javascript
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
-var max3= words.xs( function(word, index){
-	return true if word.length < 4 ).$;
+var words= new Words('access all words and do whatever you like with them');
+words.xs( function(word, index){
+  if( word.length < 4 )
+    return true;
 });
-// 123 not are
+console.log( words.$ );
+// all and do you
 
-var max3= words.xs( function(word, index){
-	if( word === '123' )
-		return '*'+ word+ '*'
-	else return true
+var words= new Words('or mark words in a string');
+words.xs( function(word, index){
+  if( word === 'mark' )
+    return '*marked*';
+  return true;
 });
-// numbers accepted *123* not objects, arrays etc.. they are simply ignored..
+console.log( words.$ );
+// or *marked* words in a string
 ```
 
 **Words.prototype.find**
@@ -121,11 +137,9 @@ var max3= words.xs( function(word, index){
 > Returns an array containing all indices(numbers) in the internal array where substring is found.
 
 ```javascript
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
-words.find( 'hello' );
-// []
-words.find( 'accepted' );
-// [2]
+var words= new Words('finding words with words is easy!');
+console.log( words.find('words') );
+// [2, 4]
 ```
 
 **Words.prototype.upper**
@@ -136,14 +150,17 @@ words.find( 'accepted' );
 > (if alpha of course). If indices is not set to 0, the words found on indices are changed to uppercase.
 
 ```javascript
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
+var words= new Words('you can be very specific with upper and lowercase');
+console.log( words.upper(-1, -3).$ );
+// you can be very specific with UPPER and LOWERCASE
+
+var words= new Words('you can be very specific with upper and lowercase');
 console.log( words.upper(0, 1, -1).$ );
-// NumberS AccepteD 123 NoT Objects, ArrayS Etc.. TheY ArE SimplY Ignored..
-console.log( words.upper(1, 4, -1).$ );
-// note that the internal array is changed and we are applying a upper over it:
-// NUMBERS AccepteD 123 NOT Objects, ArrayS Etc.. TheY ArE SimplY IGNORED..
+// YoU CaN BE VerY SpecifiC WitH UppeR AnD LowercasE
+
+var words= new Words('shout it all out!');
 console.log( words.upper().$ );
-// NUMBERS ACCEPTED 123 NOT OBJECTS, ARRAYS ETC.. THEY ARE SIMPLY IGNORED..
+// SHOUT IT ALL OUT!
 ```
 
 **Words.prototype.lower**
@@ -159,17 +176,17 @@ console.log( words.upper().$ );
 > every additional argument is ignored.
 
 ```javascript
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
+var words= new Words('reverse this whole string');
 console.log( words.reverse().$ );
-//..derongi ylpmis era yeht ..cte syarra ,stcejbo ton 321 detpecca srebmun
+// gnirts elohw siht esrever
 
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
+var words= new Words('words are reversed in place when 0 is given');
 console.log( words.reverse(0).$ );
-// srebmun detpecca 321 ton ,stcejbo syarra ..cte yeht era ylpmis ..derongi
+// sdrow era desrever ni ecalp nehw 0 si nevig
 
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
-console.log( words.reverse(1, 3, -2).$ );
-// srebmun accepted 321 not objects, arrays etc.. they are ylpmis ignored..
+var words= new Words('any reason to reverse a specific word?');
+console.log( words.reverse(1, -1, -2).$ );
+// yna reason to reverse a cificeps ?drow
 ```
 
 **Words.prototype.shuffle**
@@ -180,22 +197,19 @@ console.log( words.reverse(1, 3, -2).$ );
 > Without arguments, all indices are shuffled.
 
 ```javascript
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
+// pseudo random, it should be extremely rare to see the same results on any run!
+
+var words= new Words('let\'s mess up this sentence');
 console.log( words.shuffle().$ );
-// without arguments all words positions are pseudo randomly shuffled:
-// they numbers accepted not objects, etc.. ignored.. arrays are simply 123
+// sentence let's up mess this
 
+var words= new Words('or mess it up totally in place');
+console.log( words.shuffle(0).$ );
+// ro esms it up ltlotay ni eclpa
 
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
-console.log( words.reverse(0).$ );
-// with 0, characters in words are pseudo randomly shuffled in place, below a run on my system:
-//brmneus ptcdeace 231 tno e,bsctjo raaysr .et.c yteh ear ilmyps .ro.engdi
-
-
-words.set( 'numbers accepted', 123, 'not objects, arrays etc..', {}, [1,2,3], 'they are simply ignored..' );
-console.log( words.reverse(1, 3, -1).$ );
-// characters in words on indices are pseudo randomly shuffled:
-//rubmsne accepted 312 not objects, arrays etc.. they are simply d.eirno.g
+var words= new Words('let\'s shuffle some specific words');
+console.log( words.shuffle(2, -1).$ );
+// let's efsfluh some specific srowd
 ```
 
 **Words.prototype.clear**
@@ -210,9 +224,9 @@ console.log( words.reverse(1, 3, -1).$ );
 > Invalid arguments are ignored
 
 ```javascript
-var words= new Words( 'testing words is real fun, actually for real!' );
-console.log( words.remove( null, 'real', -1, {}, 4, 5, new Date(), -2, 'is', []) );
-// testing words actually
+var words= new Words('removing specific words is very easy');
+console.log( words.remove(2, 3, -2).$ );
+// removing is easy
 ```
 
 **Words.prototype.pop**
@@ -222,9 +236,9 @@ console.log( words.remove( null, 'real', -1, {}, 4, 5, new Date(), -2, 'is', [])
 > be removed from the internal array, starting from the last word going backwards.
 
 ```javascript
-var words= new Words( 'testing words is real fun!' );
-console.log( words.pop(3) );
-// testing words
+var words= new Words( 'pop means: remove words from the end of this string' );
+console.log( words.pop(3).$ );
+// pop means: remove words from the end
 ```
 
 **Words.prototype.push**
@@ -233,9 +247,9 @@ console.log( words.pop(3) );
 > Adds words to the end of the internal array.
 
 ```javascript
-var words= new Words( 'testing words' );
-console.log( words.push( 'before', 'usage' ).$ );
-// testing words before usage
+var words= new Words( 'push means: add to the end of this' );
+console.log( words.push( 'string' ).$ );
+// push means: add to the end of this string
 ```
 
 **Words.prototype.shift**
@@ -246,9 +260,9 @@ console.log( words.push( 'before', 'usage' ).$ );
 > be removed from the internal array, starting from the first word going forwards.
 
 ```javascript
-var words= new Words( 'serious testing of words is fun!' );
-console.log( words.shift(3).$ );
-// words is fun!
+var words= new Words( 'shift means: remove words from the start' );
+console.log( words.shift(2).$ );
+// remove words from the start
 ```
 
 **Words.prototype.unshift**
@@ -257,9 +271,9 @@ console.log( words.shift(3).$ );
 > Adds words to the beginning of the internal array.
 
 ```javascript
-var words= new Words( 'words is fun!' );
-console.log( words.unshift('serious', 'testing', 'of').$ );
-// serious testing of words is fun!
+var words= new Words( 'adding words to the start of a string' );
+console.log( words.unshift('unshift', 'means:').$ );
+// unshift means: adding words to the start of a string
 ```
 
 **Words.prototype.insert**
@@ -268,9 +282,9 @@ console.log( words.unshift('serious', 'testing', 'of').$ );
 > Insert word(s) at index of the internal array.
 
 ```javascript
-var words= new Words( 'testing words' );
-console.log( words.insert( -1, 'some', 'silly' ).$ );
-// testing some silly words
+var words= new Words( 'insert a word in this string' );
+console.log( words.insert( 3, 'specific' ).$ );
+// insert a specific word in this string
 ```
 
 **Words.prototype.replace**

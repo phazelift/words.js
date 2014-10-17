@@ -21,6 +21,7 @@
 
 Strings= Str= _= require 'strings.js'
 
+# only works on sorted arrays
 removeDupAndFlip= ( array ) ->
 	length= array.length- 1
 	newArr= []
@@ -38,12 +39,6 @@ insertSort= ( array ) ->
 			--prev
 		array[+prev+1]= current
 	return array
-
-objectToArray= ( object ) ->
-	array= []
-	array.push data for key, data of object
-	return array
-
 
 # call with context!
 changeCase= ( method, args ) ->
@@ -107,7 +102,6 @@ class Words extends Strings
 	lower: -> changeCase.call @, 'lower', Array::slice.call arguments; @
 
 	reverse: ->
-		console.log 'from words: ', arguments
 		if arguments?[0] is 0 then @xs ( word ) -> Str.reverse word
 		else if arguments.length > 0 then for arg in arguments
 			applyToValidIndex arg, @count, ( index ) => @words[ index ]= Str.reverse @words[ index ]
