@@ -6,8 +6,8 @@ words.js is all about finding/manipulating/sorting/adding/removing words in or f
 <br/>
 words.js extends strings.js. Most methods overload strings.js methods, only to focus on words rather than characters.
 Where in strings.js you use shuffle to randomly reorder the characters in a string, in words.js the overloaded
-shuffle function randomly reorders the words in a string. This same idea applies to pretty much all methods of
-words.js, although some methods like .upper() and .lower(), combine word and character based manipulation.
+shuffle function randomly reorders the words in a string, or you can shuffle the characters of a specific word in
+a string, and much more. See the API for some sweet examples.
 <br/><br/>
 All indexes in words.js are 1 based. Negative indexes can be used in most functions. -1 references the last
 word in the internal words array, 1 references the first word.
@@ -18,26 +18,32 @@ ___
 You can use `npm install words.js` when using node.js. The dependant strings.js and included types.js will
 automatically be installed as well.
 <br/>
-<br/>
-Use:
 ```javascript
-var Types= Words.Types
-var Strings= Words.Strings
+var Words	= require('words.js');
+// to have the non-overloaded strings.js, but also the handy types.js
+// functions available as well use:
+var Types	= require('words.js').Types;
+var Strings	= require('words.js').Strings;
 // or
-var Types= require('words.js').Types;
-var Strings= require('words.js').Strings;
+var Types= Words.Types;
+var Strings= Words.Strings;
 ```
-to have the non-overloaded strings.js, but also the handy types.js functions available as well.
 ___
 
 types.js, strings.js and words.js are a very powerful set of building blocks that can make the life of a Javascript
 developer much more pleasant and bug free IMHO.
-<br/>
+
+All input and output is type save; you can throw in any type and still get a string if the expected output is of
+type `<string>`. If any method receives an argument of a type it cannot process, the argument will simply be ignored.
+
 
 All examples are to be found in the API below.
 ___
 API
 ---
+
+Everywhere you see `<string>/<number>`, it means you can either enter a String or Number argument, both will be parsed
+correctly.
 
 **Words.prototype.constructor**
 > `<this> constructor( <string>/<number> string= '' )`
@@ -113,13 +119,14 @@ console.log( words.$ );
 > will be applied to index in the internal array.
 
 ```javascript
-var words= new Words('access all words and do whatever you like with them');
+// dispose all words longer than 4 characters
+var words= new Words('words of more than 4 characters will be removed');
 words.xs( function(word, index){
-  if( word.length < 4 )
+  if( word.length < 5 )
     return true;
 });
 console.log( words.$ );
-// all and do you
+// of more than 4 will be
 
 var words= new Words('or mark words in a string');
 words.xs( function(word, index){
