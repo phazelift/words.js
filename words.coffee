@@ -177,6 +177,7 @@ class Words extends Strings
 
 	# refactor these two later..
 	startsWith: ( start ) ->
+		return false if '' is start= _.forceString start
 		result= true
 		start= new Words start
 		start.xs (word, index) =>
@@ -184,6 +185,7 @@ class Words extends Strings
 		return result
 
 	endsWith: ( end ) ->
+		return false if '' is end= _.forceString end
 		result= true
 		count= 1
 		end= new Words end

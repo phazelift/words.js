@@ -372,6 +372,9 @@
 
     Words.prototype.startsWith = function(start) {
       var result;
+      if ('' === (start = _.forceString(start))) {
+        return false;
+      }
       result = true;
       start = new Words(start);
       start.xs((function(_this) {
@@ -386,6 +389,9 @@
 
     Words.prototype.endsWith = function(end) {
       var count, index, result, _i, _ref;
+      if ('' === (end = _.forceString(end))) {
+        return false;
+      }
       result = true;
       count = 1;
       end = new Words(end);
