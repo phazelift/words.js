@@ -105,7 +105,7 @@ class Words extends Strings
 		if arguments?[0] is 0 then @xs ( word ) -> Str.reverse word
 		else if arguments.length > 0 then for arg in arguments
 			applyToValidIndex arg, @count, ( index ) => @words[ index ]= Str.reverse @words[ index ]
-		else @set Str.reverse @$
+		else @xs (word, index) => @get @count- index
 		return @
 
 	shuffle: ( selection ) ->
@@ -174,6 +174,22 @@ class Words extends Strings
 		return @
 
 	sort: -> insertSort @words; @
+
+	# refactor these two later..
+	startsWith: ( start ) ->
+		result= true
+		start= new Words start
+		start.xs (word, index) =>
+			result= false if word isnt @words[ index ]
+		return result
+
+	endsWith: ( end ) ->
+		result= true
+		count= 1
+		end= new Words end
+		for index in [end.count..1]
+			result= false if ( end.get(index) isnt @words[@count- count++] )
+		return result
 
 Words::unshift= Words::prepend
 Words.Strings= Strings

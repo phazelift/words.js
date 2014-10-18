@@ -203,7 +203,11 @@
           })(this));
         }
       } else {
-        this.set(Str.reverse(this.$));
+        this.xs((function(_this) {
+          return function(word, index) {
+            return _this.get(_this.count - index);
+          };
+        })(this));
       }
       return this;
     };
@@ -364,6 +368,33 @@
     Words.prototype.sort = function() {
       insertSort(this.words);
       return this;
+    };
+
+    Words.prototype.startsWith = function(start) {
+      var result;
+      result = true;
+      start = new Words(start);
+      start.xs((function(_this) {
+        return function(word, index) {
+          if (word !== _this.words[index]) {
+            return result = false;
+          }
+        };
+      })(this));
+      return result;
+    };
+
+    Words.prototype.endsWith = function(end) {
+      var count, index, result, _i, _ref;
+      result = true;
+      count = 1;
+      end = new Words(end);
+      for (index = _i = _ref = end.count; _ref <= 1 ? _i <= 1 : _i >= 1; index = _ref <= 1 ? ++_i : --_i) {
+        if (end.get(index) !== this.words[this.count - count++]) {
+          result = false;
+        }
+      }
+      return result;
     };
 
     return Words;

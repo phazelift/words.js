@@ -89,7 +89,7 @@ console.log( words.$ );
 
 ```javascript
 var words= new Words('we can be very specific and pick any word we need');
-words.get( 5, -1 );
+console.log( words.get(5, -1) );
 // specific need
 ```
 **Words.prototype.$**
@@ -178,14 +178,15 @@ console.log( words.upper().$ );
 **Words.prototype.reverse**
 > `<this> reverse( <string>/<number> index, [index1, ..., indexN] )`
 
-> Without arguments the whole internal array(as string) is reversed. With index or indices given, the words denoted by
-> indices are reversed. If index is 0, every word is reversed, but will remain on it's original/current index,
-> every additional argument is ignored.
+> Without arguments the internal array is reversed; not the characters, like with Strings.reverse(), but the words
+> positions in the internal array are reversed. If index is 0, every word is reversed, but will remain on it's original/current index,
+> every additional argument is then ignored. With index or indices given, the characters in the words
+> denoted by indices are reversed.
 
 ```javascript
-var words= new Words('reverse this whole string');
+var words= new Words('reverse words positions');
 console.log( words.reverse().$ );
-// gnirts elohw siht esrever
+// positions words reverse
 
 var words= new Words('words are reversed in place when 0 is given');
 console.log( words.reverse(0).$ );
@@ -317,10 +318,46 @@ console.log( words.sort().$ );
 // actually funny is really testing words
 ```
 
+**Words.prototype.startsWith**
+> `<boolean> startsWith( <string>/<number> string )`
+
+> Returns true only if the internal string/array starts with string
+
+```javascript
+var words= new Words( 'is this a start or an end?' );
+console.log( words.startsWith('is this a start') );
+// true
+```
+
+**Words.prototype.endsWith**
+> `<boolean> endsWith( <string>/<number> string )`
+
+> Returns true only if the internal string/array ends with string
+
+```javascript
+var words= new Words( 'is this a start or an end?' );
+console.log( words.endsWith('an end?') );
+// true
+```
+
 __________
 
 change log
 ==========
+
+**0.2.0**
+
+Modified:
+- Words.prototype.reverse() - The default reverse without arguments no longer reverses all characters. This functionality
+was 100% similar to the default Strings.reverse(), so pointless to overload. Now .reverse() reverses the positions
+of all words, which is more useful as addition.
+
+Added:
+- Words.prototype.startsWith()
+- Words.prototype.endsWith()
+
+Don't mind the version please, as for every typo in the readme I have to bump the version for npm..
+
 
 **0.1.2**
 
