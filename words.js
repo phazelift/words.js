@@ -86,21 +86,6 @@
     __extends(Words, _super);
 
     function Words() {
-      Object.defineProperty(this, '$', {
-        get: function() {
-          return this.get();
-        }
-      });
-      Object.defineProperty(this, 'string', {
-        get: function() {
-          return this.get();
-        }
-      });
-      Object.defineProperty(this, 'count', {
-        get: function() {
-          return this.words.length;
-        }
-      });
       this.set.apply(this, arguments);
     }
 
@@ -406,6 +391,24 @@
     return Words;
 
   })(Strings);
+
+  Object.defineProperty(Words.prototype, '$', {
+    get: function() {
+      return this.get();
+    }
+  });
+
+  Object.defineProperty(Words.prototype, 'string', {
+    get: function() {
+      return this.get();
+    }
+  });
+
+  Object.defineProperty(Words.prototype, 'count', {
+    get: function() {
+      return this.words.length;
+    }
+  });
 
   Words.prototype.unshift = Words.prototype.prepend;
 

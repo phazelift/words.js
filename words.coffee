@@ -58,11 +58,7 @@ applyToValidIndex= ( orgIndex, limit, callback ) => callback( index ) if false i
 delimiter= ' '
 class Words extends Strings
 
-	constructor: ->
-		Object.defineProperty @, '$', { get: -> @.get() }
-		Object.defineProperty @, 'string', { get: -> @.get() }
-		Object.defineProperty @, 'count', { get: -> @words.length }
-		@set.apply @, arguments
+	constructor: -> @set.apply @, arguments
 
 	set: ->
 		return @ if arguments.length < 1
@@ -192,6 +188,10 @@ class Words extends Strings
 		for index in [end.count..1]
 			result= false if ( end.get(index) isnt @words[@count- count++] )
 		return result
+
+Object.defineProperty Words::, '$', { get: -> @.get() }
+Object.defineProperty Words::, 'string', { get: -> @.get() }
+Object.defineProperty Words::, 'count', { get: -> @words.length }
 
 Words::unshift= Words::prepend
 Words.Strings= Strings
