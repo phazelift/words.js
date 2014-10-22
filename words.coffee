@@ -198,5 +198,5 @@ Words.Strings= Strings
 Words.Types	= Strings.Types
 Words.Chars = Strings.Chars
 
-return window.Words if window?
+return window.Words= Words if window?
 return module.exports= Words if module

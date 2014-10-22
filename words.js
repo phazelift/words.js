@@ -419,7 +419,7 @@
   Words.Chars = Strings.Chars;
 
   if (typeof window !== "undefined" && window !== null) {
-    return window.Words;
+    return window.Words = Words;
   }
 
   if (module) {
