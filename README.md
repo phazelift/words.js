@@ -345,6 +345,10 @@ __________
 change log
 ==========
 
+**0.2.4**
+
+Updated strings.js dependency to version 1.1.6, which includes types.js version 1.3.4.
+
 **0.2.0**
 
 Modified:
