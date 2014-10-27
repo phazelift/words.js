@@ -1,6 +1,6 @@
 {
   "name": "words.js",
-  "version": "0.2.4",
+  "version": "0.2.7",
   "description": "A flexible, robust and powerful Javascript word-string manipulation library.",
   "main": "words.min.js",
   "scripts": {
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/phazelift/words.js",
   "dependencies": {
-    "strings.js" : "1.1.4"
+    "strings.js" : "1.1.9"
   },
   "devDependencies": {}
 }

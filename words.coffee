@@ -21,37 +21,31 @@
 
 Strings= Str= _= require 'strings.js'
 
-# only works on sorted arrays
-removeDupAndFlip= ( array ) ->
-	length= array.length- 1
-	newArr= []
-	for index in [length..0]
-		newArr.push array[ index ] if newArr[ newArr.length- 1 ] isnt array[ index ]
-	return newArr
+stringsFromArray= ( array ) ->
+	strings= []
+	for value in _.forceArray array
+		strings.push value if _.isString value
+	return strings
 
-insertSort= ( array ) ->
-	length= array.length- 1
-	for index in [1..length]
-		current	= array[index]
-		prev		= index- 1
-		while (prev >= 0) && (array[prev] > current)
-			array[prev+1]= array[prev]
-			--prev
-		array[+prev+1]= current
-	return array
+numbersFromArray= ( array ) ->
+	numbers= []
+	for value in _.forceArray array
+		numbers.push (value+ 0) if _.isNumber value
+	return numbers
 
 # call with context!
 changeCase= ( method, args ) ->
-	if _.isString args?[0] then @set Str[ method ] @$, args...		# strings
-	else if (args?[0] is 0) then for pos in args							# words[indices]
+	words= stringsFromArray args
+	indices= numbersFromArray args
+	if words.length > 0 then @set Strings[ method ] @string, words...		# strings
+	if indices[0] is 0 then for pos in indices									# words[indices] (characters)
 		for index in [ 0..@count- 1 ]
 			@words[ index ]= Str[ method ] @words[ index ], pos
 	else
-		args= [0..@count] if args.length < 1								# words
-		for pos in args
-			pos= _.positiveIndex pos, @count
-			@words[ pos ]= Str[ method ] @words[ pos ]
-
+		indices= [0..@count] if args.length < 1									# words
+		for index in indices
+			index= _.positiveIndex index, @count
+			@words[ index ]= Str[ method ] @words[ index ]
 
 applyToValidIndex= ( orgIndex, limit, callback ) => callback( index ) if false isnt index= _.positiveIndex orgIndex, limit
 
@@ -127,7 +121,7 @@ class Words extends Strings
 				args.unshift arg
 			else if _.isNumber arg
 				args.push Words.positiveIndex arg, @count
-		args= removeDupAndFlip insertSort args
+		args= _.noDupAndReverse _.insertSort args
 		for arg, index in args
 			if _.isNumber arg
 				@xs ( word, index ) => true if index isnt arg
@@ -169,7 +163,7 @@ class Words extends Strings
 			return true
 		return @
 
-	sort: -> insertSort @words; @
+	sort: -> _.insertSort @words; @
 
 	# refactor these two later..
 	startsWith: ( start ) ->

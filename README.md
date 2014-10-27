@@ -1,10 +1,49 @@
 words.js
 ========
 
-words.js is all about finding/manipulating/sorting/adding/removing words in or from a string.
+Only 5.5Kb minified (depends on strings.js), words.js is a toolbox for words from a space seperated string.
+Great for text input or command-line parsing, educational tools, word-games, text filters, password generators, etc..
 <br/>
-<br/>
-words.js extends strings.js. Most methods overload strings.js methods, only to focus on words rather than characters.
+
+**a few quick examples:**
+```javascript
+var words= new Words('pick the words you need with indices');
+console.log( words.get(1, 3, -2, 3) );
+// pick words with words
+
+words.set('you can be very specific with upper and lowercase')
+	.upper(-1, -3, 'y', 'specific')
+console.log( words.$ );
+// You can be verY SPECIFIC with UPPER and LOWERCASE
+
+words.set('you can reverse all word positions').upper(3).reverse();
+console.log( words.$ );
+// positions word all REVERSE can you
+
+words.set('or reverse or remove specific words and sort?')
+	.reverse(2, -1).remove('or', 'remove').sort();
+console.log( words.$ );
+// ?tros and esrever specific words
+
+words.set('noticed you can remove indices and words mixed?')
+	.remove('noticed', -2, -4, 'and');
+console.log( words.$ );
+// you can remove mixed?
+
+words.set('or shuffle specific words').shuffle(2, 3);
+console.log( words.$ );
+// or seuhlff fiiespcc words (pseudo random)
+
+words.set('Words.startsWith searches for matching words');
+console.log( words.startsWith('Words.') );
+// false
+console.log( words.startsWith('Words.startsWith searches') );
+// true
+
+// more examples below in the API
+```
+__________________________________
+words.js depends on, and extends strings.js. Most methods overload strings.js methods, only to focus on words rather than characters.
 Where in strings.js you use shuffle to randomly reorder the characters in a string, in words.js the overloaded
 shuffle function randomly reorders the words in a string, or you can shuffle the characters of a specific word in
 a string, and much more. See the API for some sweet examples.
@@ -12,10 +51,10 @@ a string, and much more. See the API for some sweet examples.
 All indexes in words.js are 1 based. Negative indexes can be used in most functions. -1 references the last
 word in the internal words array, 1 references the first word.
 
-The `new Words()` object is made for chaining operations on words in strings, most of it's methods return their
+words.js is made for chaining operations on words in strings, most of it's methods return their
 own context. To return the actual value of the internal string/array, one can use `.get()` or `.$` or `.string`.
 ___
-You can use `npm install words.js` when using node.js. The dependant strings.js and included types.js will
+You can use `npm install words.js` when using node.js. The dependent strings.js and included types.js will
 automatically be installed as well.
 <br/>
 ```javascript
@@ -150,16 +189,17 @@ console.log( words.find('words') );
 ```
 
 **Words.prototype.upper**
-> `<this> upper( <string>/<number> index, <string>/<number> position )`
+> `<this> upper( <string>/<number> value, [value1, ..., valueN] )`
 
-> Change words or characters in words to uppercase. If no arguments are given, all words are changed to uppercase.
+> Change words or characters to uppercase. If no arguments are given, all words are changed to uppercase.
 > If index is set to 0, all character positions denoted by position, in all words, are changed to uppercase
-> (if alpha of course). If indices is not set to 0, the words found on indices are changed to uppercase.
+> (if alpha of course). If indices is not set to 0, the words found on indices are changed to uppercase. valueN can
+> also be a word, and words can be mixed with indices.
 
 ```javascript
 var words= new Words('you can be very specific with upper and lowercase');
-console.log( words.upper(-1, -3).$ );
-// you can be very specific with UPPER and LOWERCASE
+console.log( words.upper(-1, -3, 'y', 'specific').$ );
+// You can be verY SPECIFIC with UPPER and LOWERCASE
 
 var words= new Words('you can be very specific with upper and lowercase');
 console.log( words.upper(0, 1, -1).$ );
@@ -171,7 +211,7 @@ console.log( words.upper().$ );
 ```
 
 **Words.prototype.lower**
-> `<this> lower( <string>/<number> index, <string>/<number> position )`
+> `<this> lower( <string>/<number> value, [value1, ..., valueN] )`
 
 > The same as with .upper(), except for that uppercase characters are changed to lowercase.
 
@@ -345,10 +385,20 @@ __________
 change log
 ==========
 
+**0.2.7**
+
+Words.upper and Words.lower now accept multiple indices and/or words as mixed arguments.
+
+```javascript
+var words= new Words('you can upper or lower with indices and words mixed');
+console.log( words.upper('can', 0, 1, 'indices', 'words') );
+// [ 'You', 'CAN', 'Upper', 'Or', 'Lower', 'With', 'INDICES', 'And', 'WORDS', 'Mixed' ]
+```
+_______________________________
 **0.2.4**
 
 Updated strings.js dependency to version 1.1.6, which includes types.js version 1.3.4.
-
+_______________________________
 **0.2.0**
 
 Modified:
@@ -361,8 +411,7 @@ Added:
 - Words.prototype.endsWith()
 
 Don't mind the version please, as for every typo in the readme I have to bump the version for npm..
-
-
+________________________________
 **0.1.2**
 
 words.js now depends on strings.js version 1.1.4.. strings.js now includes types.js version 1.2.8, which is
