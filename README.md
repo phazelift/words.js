@@ -1,7 +1,7 @@
 words.js
 ========
 
-Only 5.5Kb minified (depends on strings.js), words.js is a toolbox for words from a space seperated string.
+Only 5.7Kb minified (depends on strings.js), words.js is a toolbox for words from a space seperated string.
 Great for text input or command-line parsing, educational tools, word-games, text filters, password generators, etc..
 <br/>
 
@@ -43,7 +43,9 @@ console.log( words.startsWith('Words.startsWith searches') );
 // more examples below in the API
 ```
 __________________________________
-words.js depends on, and extends strings.js. Most methods overload strings.js methods, only to focus on words rather than characters.
+**words.js depends on, and extends strings.js**, so, for browser use: load strings.js before words.js in your index.html.
+
+Most methods overload strings.js methods, only to focus on words rather than characters.
 Where in strings.js you use shuffle to randomly reorder the characters in a string, in words.js the overloaded
 shuffle function randomly reorders the words in a string, or you can shuffle the characters of a specific word in
 a string, and much more. See the API for some sweet examples.
@@ -385,6 +387,11 @@ __________
 change log
 ==========
 
+**0.2.9**
+
+Finaly, the Jasmine tests have arrived. Fixed some minor bugs along the way.
+
+_______________________________
 **0.2.7**
 
 Words.upper and Words.lower now accept multiple indices and/or words as mixed arguments.
@@ -393,6 +400,8 @@ Words.upper and Words.lower now accept multiple indices and/or words as mixed ar
 var words= new Words('you can upper or lower with indices and words mixed');
 console.log( words.upper('can', 0, 1, 'indices', 'words') );
 // [ 'You', 'CAN', 'Upper', 'Or', 'Lower', 'With', 'INDICES', 'And', 'WORDS', 'Mixed' ]
+
+Updated strings.js dependency to version 1.1.9, which includes types.js version 1.3.6.
 ```
 _______________________________
 **0.2.4**

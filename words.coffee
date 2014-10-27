@@ -19,7 +19,11 @@
 
 "use strict"
 
-Strings= Str= _= require 'strings.js'
+# load dependencies
+if window? then Strings= window.Strings
+else if module? then Strings= require 'strings.js'
+
+_= Strings
 
 stringsFromArray= ( array ) ->
 	strings= []
@@ -40,12 +44,12 @@ changeCase= ( method, args ) ->
 	if words.length > 0 then @set Strings[ method ] @string, words...		# strings
 	if indices[0] is 0 then for pos in indices									# words[indices] (characters)
 		for index in [ 0..@count- 1 ]
-			@words[ index ]= Str[ method ] @words[ index ], pos
+			@words[ index ]= Strings[ method ] @words[ index ], pos
 	else
 		indices= [0..@count] if args.length < 1									# words
 		for index in indices
 			index= _.positiveIndex index, @count
-			@words[ index ]= Str[ method ] @words[ index ]
+			@words[ index ]= Strings[ method ] @words[ index ]
 
 applyToValidIndex= ( orgIndex, limit, callback ) => callback( index ) if false isnt index= _.positiveIndex orgIndex, limit
 
@@ -55,10 +59,10 @@ class Words extends Strings
 	constructor: -> @set.apply @, arguments
 
 	set: ->
-		return @ if arguments.length < 1
 		@words= []
+		return @ if arguments.length < 1
 		for arg in arguments
-			@words.push( str ) for str in Str.split Str.create(arg), delimiter
+			@words.push( str ) for str in Strings.split Strings.create(arg), delimiter
 		return @
 
 	get: ->
@@ -67,10 +71,10 @@ class Words extends Strings
 		for index in arguments
 			index= _.positiveIndex( index, @count )
 			string+= @words[ index ]+ delimiter if index isnt false
-		return Str.trim string
+		return Strings.trim string
 
 	xs: ( callback= -> true ) ->
-		return if _.notFunction(callback) or @count < 1
+		return @ if _.notFunction(callback) or @count < 1
 		result= []
 		for word, index in @words
 			if response= callback( word, index )
@@ -92,9 +96,9 @@ class Words extends Strings
 	lower: -> changeCase.call @, 'lower', Array::slice.call arguments; @
 
 	reverse: ->
-		if arguments?[0] is 0 then @xs ( word ) -> Str.reverse word
+		if arguments?[0] is 0 then @xs ( word ) -> Strings.reverse word
 		else if arguments.length > 0 then for arg in arguments
-			applyToValidIndex arg, @count, ( index ) => @words[ index ]= Str.reverse @words[ index ]
+			applyToValidIndex arg, @count, ( index ) => @words[ index ]= Strings.reverse @words[ index ]
 		else @xs (word, index) => @get @count- index
 		return @
 
@@ -102,12 +106,12 @@ class Words extends Strings
 		if selection?
 			if _.isString( selection ) then for arg in arguments
 				@xs ( word, index ) =>
-					return Str.shuffle( word ) if word is arg
+					return Strings.shuffle( word ) if word is arg
 					return true
 			else if selection is 0
-				@xs ( word ) -> Str.shuffle word
+				@xs ( word ) -> Strings.shuffle word
 			else for arg in arguments then applyToValidIndex arg, @count, ( index ) =>
-				@words[ index ]= Str.shuffle @words[ index ]
+				@words[ index ]= Strings.shuffle @words[ index ]
 		else @words= _.shuffleArray @words
 		return @
 
@@ -129,13 +133,13 @@ class Words extends Strings
 		return @
 
 	pop: ( amount ) ->
-		amount= _.forceNumber amount, 1
+		amount= Math.abs( _.forceNumber amount, 1 )
 		@words.pop() for n in [ 1..amount ]
 		return @
 
 	push: ->
 		for arg in arguments
-			@words.push Str.trim( arg ) if ('' isnt arg= _.forceString arg)
+			@words.push Strings.trim( arg ) if ('' isnt arg= _.forceString arg)
 		return @
 
 	shift: ( amount ) ->
@@ -144,18 +148,24 @@ class Words extends Strings
 		return @
 
 	prepend: ->
-		for arg, count in arguments
- 			@words.splice count, 0, Str.trim( arg ) if ('' isnt arg= _.forceString arg)
+		pos= 0
+		for arg in arguments
+ 			if '' isnt arg= _.forceString arg
+ 				@words.splice( pos, 0, Strings.trim arg )
+ 				pos++
 		return @
 
 	insert: ( index, words... ) ->
 		index= _.positiveIndex index, @count
-		for word, count in words
-			@words.splice( index+ count, 0, Str.trim word ) if ('' isnt word= _.forceString word)
+		pos= 0
+		for word in words
+			if '' isnt word= _.forceString word
+				@words.splice( index+ pos, 0, Strings.trim word )
+				pos++
 		return @
 
 	replace: ( selection, replacement= '' ) ->
-		return @ if '' is replacement= Str.trim replacement
+		return @ if '' is replacement= Strings.trim replacement
 		if _.isNumber selection
 			applyToValidIndex selection, @count, ( index ) => @words.splice index, 1, replacement
 		else @xs ( word ) ->
@@ -193,4 +203,4 @@ Words.Types	= Strings.Types
 Words.Chars = Strings.Chars
 
 return window.Words= Words if window?
-return module.exports= Words if module
+return module.exports= Words if module?
