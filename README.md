@@ -16,12 +16,12 @@ words.set('you can be very specific with upper and lowercase')
 console.log( words.$ );
 // You can be verY SPECIFIC with UPPER and LOWERCASE
 
-words.set('you can reverse all word positions').upper(3).reverse();
+words.set('you can reverse all word positions').upper(-1, 3).reverse();
 console.log( words.$ );
-// positions word all REVERSE can you
+// POSITIONS word all REVERSE can you
 
 words.set('or reverse or remove specific words and sort?')
-	.reverse(2, -1).remove('or', 'remove').sort();
+	.reverse(2, -1).remove('or', 'remove').replace.sort();
 console.log( words.$ );
 // ?tros and esrever specific words
 
@@ -34,7 +34,7 @@ words.set('or shuffle specific words').shuffle(2, 3);
 console.log( words.$ );
 // or seuhlff fiiespcc words (pseudo random)
 
-words.set('Words.startsWith searches for matching words');
+words.set('Words.startsWith searches for starting words, not characters!');
 console.log( words.startsWith('Words.') );
 // false
 console.log( words.startsWith('Words.startsWith searches') );
@@ -86,6 +86,12 @@ API
 Everywhere you see `<string>/<number>`, it means you can either enter a String or Number argument, both will be parsed
 correctly.
 
+**Words.prototype.words**
+> `<array> words`
+
+> The internal array were all (space seperated) words are stored. Better not use directly to avoid bugs, instead
+> use .set() to set, and .get(), .$ and .string to fetch.
+
 **Words.prototype.constructor**
 > `<this> constructor( <string>/<number> string= '' )`
 
@@ -100,9 +106,9 @@ console.log( words.$ );
 ```
 
 **Words.prototype.count**
-> `count`
+> `<number> count`
 
-> A getter to get the amount of words in the internal array.
+> A getter to get the amount of words in this.words.
 
 ```javascript
 var words= new Words('word counting included');
@@ -113,7 +119,7 @@ console.log( words.count );
 **Words.prototype.set**
 > `<this> set( <string>/<number> index, [index1, ..., indexN] )`
 
-> Set the internal array. Use any combination of arguments to form a string. All
+> Set this.words. Use any combination of arguments to form a string. All
 > invalid arguments will be ignored.
 
 ```javascript
@@ -134,7 +140,7 @@ console.log( words.get(5, -1) );
 // specific need
 ```
 **Words.prototype.$**
-> `$`
+> `<string> $`
 
 > A getter for .get()
 
@@ -145,19 +151,19 @@ console.log( words.$ );
 ```
 
 **Words.prototype.string**
-> `string`
+> `<string> string`
 
 > Another getter for .get(), similar to .$.
 
 **Words.prototype.xs**
 > `<this> xs( <function> callback(<string> word, <number> index) )`
 
-> Access every index/word of the internal array and apply the result of callback to it. After a call to xs, the
-> internal array will be changed to the results of the callback.
+> Access every index/word of this.words and apply the result of callback to it. After a call to xs, this.words
+> will be changed to the results of the callback.
 
 > If the callback returns true, word is applied, but you could also return word which has effectively the same result.
 > If the callback returns false or undefined, word will be skipped. Any character, String or Number returned by callback
-> will be applied to index in the internal array.
+> will be applied to index in this.words.
 
 ```javascript
 // dispose all words longer than 4 characters
@@ -182,7 +188,7 @@ console.log( words.$ );
 **Words.prototype.find**
 > `<array> find( <string>/<number> substring )`
 
-> Returns an array containing all indices(numbers) in the internal array where substring is found.
+> Returns an array containing all indices(numbers) in this.words where substring is found.
 
 ```javascript
 var words= new Words('finding words with words is easy!');
@@ -220,8 +226,8 @@ console.log( words.upper().$ );
 **Words.prototype.reverse**
 > `<this> reverse( <string>/<number> index, [index1, ..., indexN] )`
 
-> Without arguments the internal array is reversed; not the characters, like with Strings.reverse(), but the words
-> positions in the internal array are reversed. If index is 0, every word is reversed, but will remain on it's original/current index,
+> Without arguments this.words is reversed; not the characters, like with Strings.reverse(), but the words
+> positions in this.words are reversed. If index is 0, every word is reversed, but will remain on it's original/current index,
 > every additional argument is then ignored. With index or indices given, the characters in the words
 > denoted by indices are reversed.
 
@@ -265,12 +271,12 @@ console.log( words.shuffle(2, -1).$ );
 **Words.prototype.clear**
 > `<this> clear()`
 
-> Resets the internal array to empty [].
+> Resets this.words to empty [].
 
 **Words.prototype.remove**
 > `<this> remove( <string>/<number> indices and or words )`
 
-> Removes any combination of indices or words from the internal array. Without arguments remove does nothing.
+> Removes any combination of indices or words from this.words. Without arguments remove does nothing.
 > Invalid arguments are ignored
 
 ```javascript
@@ -280,10 +286,10 @@ console.log( words.remove(2, 3, -2).$ );
 ```
 
 **Words.prototype.pop**
-> `pop( <string>/<number> amount )`
+> `<this> pop( <string>/<number> amount )`
 
-> Removes the last word from the internal array if no arguments are given. If amount is valid, amount words will
-> be removed from the internal array, starting from the last word going backwards.
+> Removes the last word from this.words if no arguments are given. If amount is valid, amount words will
+> be removed from this.words, starting from the last word going backwards.
 
 ```javascript
 var words= new Words( 'pop means: remove words from the end of this string' );
@@ -292,9 +298,9 @@ console.log( words.pop(3).$ );
 ```
 
 **Words.prototype.push**
-> `push( <string>/<number> word, [word1, ..., wordN] )`
+> `<this> push( <string>/<number> word, [word1, ..., wordN] )`
 
-> Adds words to the end of the internal array.
+> Adds words to the end of this.words.
 
 ```javascript
 var words= new Words( 'push means: add to the end of this' );
@@ -303,11 +309,11 @@ console.log( words.push( 'string' ).$ );
 ```
 
 **Words.prototype.shift**
-> `shift( <string>/<number> amount )`
+> `<this> shift( <string>/<number> amount )`
 
 
-> Removes the first word from the internal array if no arguments are given. If amount is valid, amount words will
-> be removed from the internal array, starting from the first word going forwards.
+> Removes the first word from this.words if no arguments are given. If amount is valid, amount words will
+> be removed from this.words, starting from the first word going forwards.
 
 ```javascript
 var words= new Words( 'shift means: remove words from the start' );
@@ -316,9 +322,9 @@ console.log( words.shift(2).$ );
 ```
 
 **Words.prototype.unshift**
-> `unshift( <string>/<number> word, [word1, ..., wordN]  )`
+> `<this> unshift( <string>/<number> word, [word1, ..., wordN]  )`
 
-> Adds words to the beginning of the internal array.
+> Adds words to the beginning of this.words.
 
 ```javascript
 var words= new Words( 'adding words to the start of a string' );
@@ -327,9 +333,9 @@ console.log( words.unshift('unshift', 'means:').$ );
 ```
 
 **Words.prototype.insert**
-> `insert( <string>/<number> index, <string>/<number> word, [word1, ..., wordN]  )`
+> `<this> insert( <string>/<number> index, <string>/<number> word, [word1, ..., wordN]  )`
 
-> Insert word(s) at index of the internal array.
+> Insert word(s) at index of this.words.
 
 ```javascript
 var words= new Words( 'insert a word in this string' );
@@ -338,7 +344,7 @@ console.log( words.insert( 3, 'specific' ).$ );
 ```
 
 **Words.prototype.replace**
-> `replace( <string>/<number> selection, <string>/<number> replacement )`
+> `<this> replace( <string>/<number> selection, <string>/<number> replacement )`
 
 > Replace all words equal to selection to replacement.
 
@@ -352,7 +358,7 @@ console.log( words.replace('replace', 'be').$ );
 **Words.prototype.sort**
 > `<this> sort()`
 
-> Sorts the internal array alphabetically
+> Sorts this.words alphabetically
 
 ```javascript
 var words= new Words( 'testing words is really funny actually' );
@@ -363,7 +369,7 @@ console.log( words.sort().$ );
 **Words.prototype.startsWith**
 > `<boolean> startsWith( <string>/<number> string )`
 
-> Returns true only if the internal string/array starts with string
+> Returns true only if this.words starts with string
 
 ```javascript
 var words= new Words( 'is this a start or an end?' );
@@ -374,7 +380,7 @@ console.log( words.startsWith('is this a start') );
 **Words.prototype.endsWith**
 > `<boolean> endsWith( <string>/<number> string )`
 
-> Returns true only if the internal string/array ends with string
+> Returns true only if this.words ends with string
 
 ```javascript
 var words= new Words( 'is this a start or an end?' );
@@ -387,6 +393,13 @@ __________
 change log
 ==========
 
+**0.3.0**
+
+Updated
+-	strings.js dependency to the latest version 1.2.1.
+-	readme
+
+_______________________________
 **0.2.9**
 
 Finaly, the Jasmine tests have arrived. Fixed some minor bugs along the way.
@@ -427,7 +440,7 @@ words.js now depends on strings.js version 1.1.4.. strings.js now includes types
 improved with force'Type'. Check types.js in the phazelift repo for changes and API.
 
 Words.prototype.find only finds words now, use Strings.find for finding characters in words.
-Words.prototype.remove(0) has been removed as an option to clear the internal array. Not a big thing, I just thought
+Words.prototype.remove(0) has been removed as an option to clear this.words. Not a big thing, I just thought
 that we have .clear() for that, so it felt a bit confusing and redundant.
 
 The manual is now more complete and up to date.
