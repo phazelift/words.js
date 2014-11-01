@@ -1,7 +1,7 @@
 words.js
 ========
 
-Only 5.7Kb minified (depends on strings.js), words.js is a toolbox for words from a space seperated string.
+Only 5.7Kb minified (depends on strings.js), words.js is a toolbox for manipulating words from a space seperated string.
 Great for text input or command-line parsing, educational tools, word-games, text filters, password generators, etc..
 <br/>
 
@@ -174,15 +174,6 @@ words.xs( function(word, index){
 });
 console.log( words.$ );
 // of more than 4 will be
-
-var words= new Words('or mark words in a string');
-words.xs( function(word, index){
-  if( word === 'mark' )
-    return '*marked*';
-  return true;
-});
-console.log( words.$ );
-// or *marked* words in a string
 ```
 
 **Words.prototype.find**
@@ -253,7 +244,7 @@ console.log( words.reverse(1, -1, -2).$ );
 > Without arguments, all indices are shuffled.
 
 ```javascript
-// pseudo random, it should be extremely rare to see the same results on any run!
+// pseudo random
 
 var words= new Words('let\'s mess up this sentence');
 console.log( words.shuffle().$ );
