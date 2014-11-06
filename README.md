@@ -55,18 +55,19 @@ word in the internal words array, 1 references the first word.
 words.js is made for chaining operations on words in strings, most of it's methods return their
 own context. To return the actual value of the internal string/array, one can use `.get()` or `.$` or `.string`.
 ___
-You can use `npm install words.js` when using node.js. The dependent strings.js and included types.js will
-automatically be installed as well.
-<br/>
+words.js includes types.js and strings.js. In the browser you can access them via the following global variables:
+- Types
+- Strings
+- Words
+
+You can use `npm install words.js` when you're on node.js.
+
+In npm, words.js, types.js and strings.js can be accessed in the following way:
 ```javascript
 var Words	= require('words.js');
-// to have the non-overloaded strings.js, but also the handy types.js
-// functions available as well use:
 var Types	= require('words.js').Types;
+// to have the non-overloaded strings.js
 var Strings	= require('words.js').Strings;
-// or
-var Types= Words.Types;
-var Strings= Words.Strings;
 ```
 ___
 

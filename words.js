@@ -1507,6 +1507,8 @@
   Words.Chars = Chars;
 
   if (typeof window !== "undefined" && window !== null) {
+    window.Types = Types;
+    window.Strings = Strings;
     window.Words = Words;
   } else {
     module.exports = Words;

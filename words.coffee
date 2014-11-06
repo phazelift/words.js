@@ -750,9 +750,14 @@ Object.defineProperty Words::, 'string', { get: -> @.get() }
 Object.defineProperty Words::, 'count', { get: -> @words.length }
 
 Words::unshift= Words::prepend
-Words.Strings= Strings
-Words.Types	= Types
-Words.Chars = Chars
 
-if window? then window.Words= Words
-else module.exports= Words
+Words.Strings	= Strings
+Words.Types		= Types
+Words.Chars		= Chars
+
+if window?
+	window.Types= Types
+	window.Strings= Strings
+	window.Words= Words
+else
+	module.exports= Words
