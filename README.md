@@ -1,8 +1,8 @@
 words.js
 ========
 
-Only 5.7Kb minified (depends on strings.js), words.js is a toolbox for manipulating words from a space seperated string.
-Great for text input or command-line parsing, educational tools, word-games, text filters, password generators, etc..
+words.js is a toolbox for manipulating the words in a string. Great for handling command-line or text input,
+educational tools, word-games, text filters, password generators, etc..
 <br/>
 
 **a few quick examples:**
@@ -43,7 +43,6 @@ console.log( words.startsWith('Words.startsWith searches') );
 // more examples below in the API
 ```
 __________________________________
-**words.js depends on, and extends strings.js**, so, for browser use: load strings.js before words.js in your index.html.
 
 Most methods overload strings.js methods, only to focus on words rather than characters.
 Where in strings.js you use shuffle to randomly reorder the characters in a string, in words.js the overloaded
@@ -70,9 +69,6 @@ var Types= Words.Types;
 var Strings= Words.Strings;
 ```
 ___
-
-types.js, strings.js and words.js are a very powerful set of building blocks that can make the life of a Javascript
-developer much more pleasant and bug free IMHO.
 
 All input and output is type save; you can throw in any type and still get a string if the expected output is of
 type `<string>`. If any method receives an argument of a type it cannot process, the argument will simply be ignored.
@@ -384,6 +380,11 @@ __________
 change log
 ==========
 
+**0.3.2**
+
+Removed strings.js dependency. types.js (1.4.2) and strings.js (1.2.2) are now included in words.js
+
+___
 **0.3.0**
 
 Updated

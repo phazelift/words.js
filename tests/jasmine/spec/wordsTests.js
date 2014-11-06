@@ -1,6 +1,6 @@
 
 //
-var _= Strings;
+var _= Strings= Words.Strings;
 describe("new Words and .set( strings )", function() {
 
     it("should return an empty string if no or invalid arguments are given", function(){
