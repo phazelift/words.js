@@ -43,19 +43,12 @@ console.log( words.startsWith('Words.startsWith searches') );
 // more examples below in the API
 ```
 __________________________________
+words.js includes types.js and strings.js.
 
-Most methods overload strings.js methods, only to focus on words rather than characters.
-Where in strings.js you use shuffle to randomly reorder the characters in a string, in words.js the overloaded
-shuffle function randomly reorders the words in a string, or you can shuffle the characters of a specific word in
-a string, and much more. See the API for some sweet examples.
-<br/><br/>
-All indexes in words.js are 1 based. Negative indexes can be used in most functions. -1 references the last
-word in the internal words array, 1 references the first word.
+- types.js is a tiny, but powerful custom type checker/enforcer. It's API can be found at: https://github.com/phazelift/types.js
+- strings.js is a full-fledged string manipulation library. It's API can be found at: https://github.com/phazelift/strings.js
 
-words.js is made for chaining operations on words in strings, most of it's methods return their
-own context. To return the actual value of the internal string/array, one can use `.get()` or `.$` or `.string`.
-___
-words.js includes types.js and strings.js. In the browser you can access them via the following global variables:
+In the browser you can access them via the following global variables:
 - Types
 - Strings
 - Words
@@ -71,6 +64,17 @@ var Strings	= require('words.js').Strings;
 ```
 ___
 
+Most methods overload strings.js methods, only to focus on words rather than characters.
+Where in strings.js you use shuffle to randomly reorder the characters in a string, in words.js the overloaded
+shuffle function randomly reorders the words in a string, or you can shuffle the characters of a specific word in
+a string, and much more. See the API for some sweet examples.
+<br/><br/>
+All indexes in words.js are 1 based. Negative indexes can be used in most functions. -1 references the last
+word in the internal words array, 1 references the first word.
+
+words.js is made for chaining operations on words in strings, most of it's methods return their
+own context. To return the actual value of the internal string/array, one can use `.get()` or `.$` or `.string`.
+___
 All input and output is type save; you can throw in any type and still get a string if the expected output is of
 type `<string>`. If any method receives an argument of a type it cannot process, the argument will simply be ignored.
 
