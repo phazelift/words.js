@@ -385,6 +385,10 @@ __________
 change log
 ==========
 
+**0.3.6**
+
+Updated the included strings.js to version 1.2.3
+___
 **0.3.2**
 
 Removed strings.js dependency. types.js (1.4.2) and strings.js (1.2.2) are now included in words.js

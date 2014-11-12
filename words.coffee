@@ -98,7 +98,7 @@ Types.typeof= ( value ) ->
 
 #=====================================================================================================
 
-#															strings.coffee (version 1.2.2)
+#															strings.coffee (version 1.2.3)
 
 
 # returns the amount of successful parseInt's on array
@@ -203,7 +203,6 @@ class Chars extends _
 		max= _.limitNumber( range[1], range )
 		return Chars.ascii _.randomNumber min, max
 
-#																	Strings
 
 class Strings_
 # refactor this later, and get rid of the ..., arguments[n] are ~10 times faster.
@@ -282,6 +281,10 @@ class Strings extends Chars
 		/^[^0-9|a-z]*$/ig.test string
 
 	@isSpace: ( string ) -> /^[ \t]+$/g.test string
+
+	@hasUpper: ( string ) -> /[A-Z]+/g.test string
+	@isUpper: ( string ) -> /^[A-Z]+$/g.test string
+	@isLower: ( string ) -> /^[a-z]+$/g.test string
 
 	@xs: ( string= '', callback ) ->
 		string= _.forceString string
@@ -485,8 +488,10 @@ class Strings extends Chars
 	isNumeric: -> Strings.isNumeric @string
 	isAlphaNumeric: -> Strings.isAlphaNumeric @string
 	isSpecial: -> Strings.isSpecial @string
-
 	isSpace: -> Strings.isSpace @string
+	isUpper: -> Strings.isUpper @string
+	hasUpper: -> Strings.hasUpper @string
+	isLower: -> Strings.isLower @string
 
 	push: ->	@string= @string+ Strings.create.apply @, arguments; @
 

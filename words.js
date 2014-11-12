@@ -489,6 +489,18 @@
       return /^[ \t]+$/g.test(string);
     };
 
+    Strings.hasUpper = function(string) {
+      return /[A-Z]+/g.test(string);
+    };
+
+    Strings.isUpper = function(string) {
+      return /^[A-Z]+$/g.test(string);
+    };
+
+    Strings.isLower = function(string) {
+      return /^[a-z]+$/g.test(string);
+    };
+
     Strings.xs = function(string, callback) {
       var index, length, response, result, _i;
       if (string == null) {
@@ -889,6 +901,18 @@
 
     Strings.prototype.isSpace = function() {
       return Strings.isSpace(this.string);
+    };
+
+    Strings.prototype.isUpper = function() {
+      return Strings.isUpper(this.string);
+    };
+
+    Strings.prototype.hasUpper = function() {
+      return Strings.hasUpper(this.string);
+    };
+
+    Strings.prototype.isLower = function() {
+      return Strings.isLower(this.string);
     };
 
     Strings.prototype.push = function() {
