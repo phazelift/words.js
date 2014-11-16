@@ -11,9 +11,6 @@ describe("new Words and .set( strings )", function() {
         result= new Words( null ).$;
         expect( result ).toBe( '' );
 
-        result= new Words( [1, 2, 3] ).$;
-        expect( result ).toBe( '' );
-
         result= new Words( true ).$;
         expect( result ).toBe( '' );
 
@@ -41,6 +38,20 @@ describe("new Words and .set( strings )", function() {
         result= new Words('mixed', 1, 'arguments', 2 ).$;
         expect( result ).toBe( 'mixed 1 arguments 2' );
     });
+
+
+    it("should accept space delimited string, multiple arguments and array", function(){
+
+        result= new Words('this should be split into words').$;
+        expect( result ).toBe( 'this should be split into words' );
+
+        result= new Words(['this', 'should', 'be', 'split', 'into', 'words']).$;
+        expect( result ).toBe( 'this should be split into words' );
+
+        result= new Words('this', 'should', 'be', 'split', 'into', 'words').$;
+        expect( result ).toBe( 'this should be split into words' );
+    });
+
 });
 
 describe("get( indices )", function() {
@@ -486,54 +497,85 @@ describe("pop( amount )", function() {
 
     var words= new Words('pop some words from this string');
 
-    it("should always return the context", function(){
+    it("should always return a string", function(){
 
-        result= words.pop()
-        expect( result ).toBe( words );
+        result= typeof words.pop()
+        expect( result ).toBe( 'string' );
 
-        result= words.pop( null )
-        expect( result ).toBe( words );
+        result= typeof words.pop( null )
+        expect( result ).toBe( 'string' );
 
-        result= words.pop( [] )
-        expect( result ).toBe( words );
+        result= typeof words.pop( [] )
+        expect( result ).toBe( 'string' );
     });
 
     it("should pop only one word if no or invalid arguments are given", function(){
 
         words.set('pop some words from this string');
-        result= words.pop().$
+        words.pop();
+        result= words.$;
         expect( result ).toBe( 'pop some words from this' );
 
         words.set('pop some words from this string');
-        result= words.pop( null ).$
+        words.pop( null );
+        result= words.$;
         expect( result ).toBe( 'pop some words from this' );
 
         words.set('pop some words from this string');
-        result= words.pop( true ).$
+        words.pop( true );
+        result= words.$;
         expect( result ).toBe( 'pop some words from this' );
     });
 
     it("should pop amount words if amount is valid", function(){
 
         words.set('pop some words from this string');
-        result= words.pop( 1 ).$
+        words.pop( 1 );
+        result= words.$
         expect( result ).toBe( 'pop some words from this' );
 
         words.set('pop some words from this string');
-        result= words.pop( 3 ).$
+        words.pop( 3 );
+        result= words.$
         expect( result ).toBe( 'pop some words' );
 
         words.set('pop some words from this string');
-        result= words.pop( -3 ).$
+        words.pop( -3 );
+        result= words.$
         expect( result ).toBe( 'pop some words' );
 
         words.set('pop some words from this string');
-        result= words.pop( '-3px' ).$
+        words.pop( '-3px' );
+        result= words.$
         expect( result ).toBe( 'pop some words' );
 
         words.set('pop some words from this string');
-        result= words.pop( [5] ).$
+        words.pop( [5] );
+        result= words.$
         expect( result ).toBe( 'pop' );
+    });
+
+    it("should return the popped words in reversed order, as space delimited string", function(){
+
+        words.set('pop some words from this string');
+        result= words.pop( 1 );
+        expect( result ).toBe( 'string' );
+
+        words.set('pop some words from this string');
+        result= words.pop( 3 );
+        expect( result ).toBe( 'from this string' );
+
+        words.set('pop some words from this string');
+        result= words.pop( -3 );
+        expect( result ).toBe( 'from this string' );
+
+        words.set('pop some words from this string');
+        result= words.pop( '-3px' );
+        expect( result ).toBe( 'from this string' );
+
+        words.set('pop some words from this string');
+        result= words.pop( [5] );
+        expect( result ).toBe( 'some words from this string' );
     });
 
 });

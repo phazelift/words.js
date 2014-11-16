@@ -114,6 +114,14 @@ mapStringToNumber= ( array ) ->
 
 class _ extends Types
 
+	@flexArgs: ( args... ) ->
+		if args.length < 2
+			if _.isString args[ 0 ]
+				args= Strings.split args.join ' '
+			else if _.isArray args[ 0 ]
+				args= args[ 0 ]
+		return args
+
 	@inRange: ( nr, range ) ->
 		return false if (_.isNaN nr= parseInt nr, 10) or (mapStringToNumber( range ) < 2)
 		return (nr >= range[0]) and (nr <= range[1])
@@ -203,7 +211,9 @@ class Chars extends _
 		max= _.limitNumber( range[1], range )
 		return Chars.ascii _.randomNumber min, max
 
+# end of Chars
 
+#																		Strings
 class Strings_
 # refactor this later, and get rid of the ..., arguments[n] are ~10 times faster.
 	@changeCase: ( string= '', caseMethod, args... ) ->
@@ -615,10 +625,11 @@ class Words extends Strings
 
 	constructor: -> @set.apply @, arguments
 
-	set: ->
+	set: ( args... ) ->
 		@words= []
-		return @ if arguments.length < 1
-		for arg in arguments
+		args= _.flexArgs.apply @, args
+		return @ if args.length < 1
+		for arg in args
 			@words.push( str ) for str in Strings.split Strings.create(arg), Words_.delimiter
 		return @
 
@@ -690,9 +701,12 @@ class Words extends Strings
 		return @
 
 	pop: ( amount ) ->
-		amount= Math.abs( _.forceNumber amount, 1 )
-		@words.pop() for n in [ 1..amount ]
-		return @
+		amount= Math.abs _.forceNumber amount, 1
+		popped= ''
+		for n in [ 1..amount ]
+			pop= @words.pop()
+			popped= (pop+ ' '+ popped) if pop isnt undefined
+		return popped.trim()
 
 	push: ->
 		for arg in arguments

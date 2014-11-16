@@ -84,9 +84,40 @@ ___
 API
 ---
 
-Everywhere you see `<string>/<number>`, it means you can either enter a String or Number argument, both will be parsed
+If you see `<string>/<number>`, it means you can either enter a String or Number argument, both will be parsed
 correctly.
 
+**Words.flexArgs**
+> `Words.flexArgs( arg1, ..., argN )`
+
+If you see the type `<flexArgs>` in the API, it refers to a convenience method I use for flexible arguments passing.
+A stack variable accepting flexArgs accepts 3 types of arguments:
+
+type							|example
+------------------------|---------------------------
+space delimited strings	|'this is my string'
+multiple arguments		|'this', 'is', 'my', 'string'
+array							|['this', 'is', 'my', 'string']
+
+Each generating the same result.
+
+flexArgs can be used as follows:
+```javascript
+function testArgs( arg1, arg2, argN ){
+	// need to .apply with context for all arguments to pass
+	array= Words.flexArgs.apply( this, arguments );
+	console.log( array );
+}
+testArgs( 'a', 'b', 'c' );
+// [ 'a', 'b', 'c' ]
+
+testArgs( ['a', 'b', 'c'] );
+// [ 'a', 'b', 'c' ]
+
+testArgs( 'a b c' );
+// [ 'a', 'b', 'c' ]
+```
+___
 **Words.prototype.words**
 > `<array> words`
 
@@ -118,10 +149,10 @@ console.log( words.count );
 ```
 
 **Words.prototype.set**
-> `<this> set( <string>/<number> index, [index1, ..., indexN] )`
+> `<this> set( <flexArgs> string1, ..., stringN )`
 
-> Set this.words. Use any combination of arguments to form a string. All
-> invalid arguments will be ignored.
+> Set this.words with string(s). The strings can be given in the 3 flexArgs forms, see .flexArgs description on top of the API.
+> Use any combination of arguments to form a string. All invalid arguments will be ignored.
 
 ```javascript
 var words= new Words();
@@ -278,14 +309,18 @@ console.log( words.remove(2, 3, -2).$ );
 ```
 
 **Words.prototype.pop**
-> `<this> pop( <string>/<number> amount )`
+> `<string> pop( <string>/<number> amount )`
 
-> Removes the last word from this.words if no arguments are given. If amount is valid, amount words will
-> be removed from this.words, starting from the last word going backwards.
+> Removes the last word from this.words if no arguments are given. If amount is valid, amount words will be removed from
+> this.words, starting from the last word going backwards.
+
+> A string of all words 'popped' in reverse order, will be returned.
 
 ```javascript
-var words= new Words( 'pop means: remove words from the end of this string' );
-console.log( words.pop(3).$ );
+var words= new Words( 'pop means: get and remove words from the end of this string' );
+console.log( words.pop(3) );
+// of this string
+console.log( words.$ );
 // pop means: remove words from the end
 ```
 
@@ -384,7 +419,16 @@ __________
 
 change log
 ==========
+**0.3.7**
 
+Changed:
+- Words.prototype.pop: .pop used to return context to allow for chaining, but I decided to have it return a reverse ordered
+(space delimited) string of the popped words instead. I missed that feature and considered it more valuable. Unfortunately
+this can break some code, so check your project before upgrading it to this version.
+
+Added Words.flexArgs convenience method in order to allow more flexible input. The constructor and Words.prototype.set are now
+accepting: space delimited strings, multiple arguments and array
+___
 **0.3.6**
 
 Updated the included strings.js to version 1.2.3

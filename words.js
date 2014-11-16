@@ -186,6 +186,19 @@
       return _.__super__.constructor.apply(this, arguments);
     }
 
+    _.flexArgs = function() {
+      var args;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      if (args.length < 2) {
+        if (_.isString(args[0])) {
+          args = Strings.split(args.join(' '));
+        } else if (_.isArray(args[0])) {
+          args = args[0];
+        }
+      }
+      return args;
+    };
+
     _.inRange = function(nr, range) {
       if ((_.isNaN(nr = parseInt(nr, 10))) || (mapStringToNumber(range) < 2)) {
         return false;
@@ -1198,13 +1211,15 @@
     }
 
     Words.prototype.set = function() {
-      var arg, str, _i, _j, _len, _len1, _ref;
+      var arg, args, str, _i, _j, _len, _len1, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       this.words = [];
-      if (arguments.length < 1) {
+      args = _.flexArgs.apply(this, args);
+      if (args.length < 1) {
         return this;
       }
-      for (_i = 0, _len = arguments.length; _i < _len; _i++) {
-        arg = arguments[_i];
+      for (_i = 0, _len = args.length; _i < _len; _i++) {
+        arg = args[_i];
         _ref = Strings.split(Strings.create(arg), Words_.delimiter);
         for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
           str = _ref[_j];
@@ -1382,12 +1397,16 @@
     };
 
     Words.prototype.pop = function(amount) {
-      var n, _i;
+      var n, pop, popped, _i;
       amount = Math.abs(_.forceNumber(amount, 1));
+      popped = '';
       for (n = _i = 1; 1 <= amount ? _i <= amount : _i >= amount; n = 1 <= amount ? ++_i : --_i) {
-        this.words.pop();
+        pop = this.words.pop();
+        if (pop !== void 0) {
+          popped = pop + ' ' + popped;
+        }
       }
-      return this;
+      return popped.trim();
     };
 
     Words.prototype.push = function() {
