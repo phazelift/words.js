@@ -105,7 +105,7 @@ flexArgs can be used as follows:
 ```javascript
 function testArgs( arg1, arg2, argN ){
 	// need to .apply with context for all arguments to pass
-	array= Words.flexArgs.apply( this, arguments );
+	var array= Words.flexArgs.apply( this, arguments );
 	console.log( array );
 }
 testArgs( 'a', 'b', 'c' );
