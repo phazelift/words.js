@@ -774,6 +774,9 @@ Words.Strings	= Strings
 Words.Types		= Types
 Words.Chars		= Chars
 
+if ( 'function' is typeof define ) and define.amd
+	define 'words', [], -> Words
+
 if window?
 	window.Types= Types
 	window.Strings= Strings

@@ -1549,6 +1549,12 @@
 
   Words.Chars = Chars;
 
+  if (('function' === typeof define) && define.amd) {
+    define('words', [], function() {
+      return Words;
+    });
+  }
+
   if (typeof window !== "undefined" && window !== null) {
     window.Types = Types;
     window.Strings = Strings;

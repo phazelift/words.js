@@ -1,9 +1,10 @@
 words.js
 ========
 
-words.js is a toolbox for manipulating the words in a string. Great for handling command-line or text input,
+**words.js** is a library/toolbox for working with words in a string. Great for handling command-line or text input,
 educational tools, word-games, text filters, password generators, etc..
 <br/>
+___
 
 **a few quick examples:**
 ```javascript
@@ -42,16 +43,21 @@ console.log( words.startsWith('Words.startsWith searches') );
 
 // more examples below in the API
 ```
-__________________________________
+___
+**Dependencies and loading**
+
 words.js includes types.js and strings.js.
 
-- types.js is a tiny, but powerful custom type checker/enforcer. It's API can be found at: https://github.com/phazelift/types.js
-- strings.js is a full-fledged string manipulation library. It's API can be found at: https://github.com/phazelift/strings.js
+- types.js is a tiny, but essential type-checker/enforcer. It's API can be found at: https://github.com/phazelift/types.js
+- strings.js is a flexible string manipulation library. It's API can be found at: https://github.com/phazelift/strings.js
 
 In the browser you can access them via the following global variables:
 - Types
 - Strings
 - Words
+
+
+**node.js**
 
 You can use `npm install words.js` when you're on node.js.
 
@@ -62,6 +68,23 @@ var Types	= require('words.js').Types;
 // to have the non-overloaded strings.js
 var Strings	= require('words.js').Strings;
 ```
+
+**AMD**
+
+When using AMD, you can load types.js like so:
+```javascript
+require.config({
+	paths: {
+		'types', [ '../path/to/types.min' ]
+	}
+});
+
+require( ['types'], function( Types ){
+	console.log( Types.isNumber(0) );
+	// true
+});
+```
+
 ___
 
 Most methods overload strings.js methods, only to focus on words rather than characters.
@@ -86,6 +109,7 @@ API
 
 If you see `<string>/<number>`, it means you can either enter a String or Number argument, both will be parsed
 correctly.
+___
 
 **Words.flexArgs**
 > `Words.flexArgs( arg1, ..., argN )`
@@ -93,15 +117,13 @@ correctly.
 If you see the type `<flexArgs>` in the API, it refers to a convenience method I use for flexible arguments passing.
 A stack variable accepting flexArgs accepts 3 types of arguments:
 
-type							|example
-------------------------|---------------------------
-space delimited strings	|'this is my string'
-multiple arguments		|'this', 'is', 'my', 'string'
-array							|['this', 'is', 'my', 'string']
+type							|input							|result
+------------------------|--------------------------|--------------
+space delimited strings	|'top left width'				|['top', 'left', 'width']
+multiple arguments		|'top', 'left', 'width'		|['top', 'left', 'width']
+array							|['top', 'left', 'width']	|['top', 'left', 'width']
 
 Each generating the same result.
-
-flexArgs can be used as follows:
 ```javascript
 function testArgs( arg1, arg2, argN ){
 	// need to .apply with context for all arguments to pass
@@ -419,6 +441,10 @@ __________
 
 change log
 ==========
+**0.3.8**
+
+Added AMD support.
+___
 **0.3.7**
 
 Changed:
