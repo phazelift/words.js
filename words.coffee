@@ -774,12 +774,11 @@ Words.Strings	= Strings
 Words.Types		= Types
 Words.Chars		= Chars
 
-if ( 'function' is typeof define ) and define.amd
+if define? and ( 'function' is typeof define ) and define.amd
 	define 'words', [], -> Words
-
-if window?
-	window.Types= Types
-	window.Strings= Strings
-	window.Words= Words
-else
-	module.exports= Words
+else if module?
+	module.exports	= Words
+else if window?
+	window.Types	= Types
+	window.Strings	= Strings
+	window.Words	= Words

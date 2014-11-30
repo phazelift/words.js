@@ -1549,18 +1549,16 @@
 
   Words.Chars = Chars;
 
-  if (('function' === typeof define) && define.amd) {
+  if ((typeof define !== "undefined" && define !== null) && ('function' === typeof define) && define.amd) {
     define('words', [], function() {
       return Words;
     });
-  }
-
-  if (typeof window !== "undefined" && window !== null) {
+  } else if (typeof module !== "undefined" && module !== null) {
+    module.exports = Words;
+  } else if (typeof window !== "undefined" && window !== null) {
     window.Types = Types;
     window.Strings = Strings;
     window.Words = Words;
-  } else {
-    module.exports = Words;
   }
 
 }).call(this);
