@@ -75,7 +75,7 @@ When using AMD, you can load types.js like so:
 ```javascript
 require.config({
 	paths: {
-		'types', [ '../path/to/types.min' ]
+		'types', [ 'path/to/types.min(.js)' ]
 	}
 });
 
