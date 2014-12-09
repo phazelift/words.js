@@ -22,7 +22,7 @@ console.log( words.$ );
 // POSITIONS word all REVERSE can you
 
 words.set('or reverse or remove specific words and sort?')
-	.reverse(2, -1).remove('or', 'remove').replace.sort();
+	.reverse(2, -1).remove('or', 'remove').sort();
 console.log( words.$ );
 // ?tros and esrever specific words
 
