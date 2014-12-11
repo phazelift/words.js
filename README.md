@@ -1,7 +1,7 @@
 words.js
 ========
 
-**words.js** is a library/toolbox for working with words in a string. Great for handling command-line or text input,
+**words.js** is a library/toolbox for working with strings and words. Great for handling command-line or text input,
 educational tools, word-games, text filters, password generators, etc..
 <br/>
 ___
@@ -114,31 +114,14 @@ ___
 **Words.flexArgs**
 > `Words.flexArgs( arg1, ..., argN )`
 
-If you see the type `<flexArgs>` in the API, it refers to a convenience method I use for flexible arguments passing.
-A stack variable accepting flexArgs accepts 3 types of arguments:
+***- DEPRECATED!! -***
 
-type							|input							|result
-------------------------|--------------------------|--------------
-space delimited strings	|'top left width'				|['top', 'left', 'width']
-multiple arguments		|'top', 'left', 'width'		|['top', 'left', 'width']
-array							|['top', 'left', 'width']	|['top', 'left', 'width']
+Use .intoArray instead of .flexArgs.
 
-Each generating the same result.
-```javascript
-function testArgs( arg1, arg2, argN ){
-	// need to .apply with context for all arguments to pass
-	var array= Words.flexArgs.apply( this, arguments );
-	console.log( array );
-}
-testArgs( 'a', 'b', 'c' );
-// [ 'a', 'b', 'c' ]
+.flexArgs has been renamed to 'intoArray' and is now part of the included types.js. .intoArray is 100% compatible,
+it shouldn't break any code. .flexArgs still works, but it will be removed from words.js eventually.
 
-testArgs( ['a', 'b', 'c'] );
-// [ 'a', 'b', 'c' ]
-
-testArgs( 'a b c' );
-// [ 'a', 'b', 'c' ]
-```
+See types.js .intoArray for a description.
 ___
 **Words.prototype.words**
 > `<array> words`
@@ -171,9 +154,11 @@ console.log( words.count );
 ```
 
 **Words.prototype.set**
-> `<this> set( <flexArgs> string1, ..., stringN )`
+> `<this> set( <string> string1, ..., stringN )`
 
-> Set this.words with string(s). The strings can be given in the 3 flexArgs forms, see .flexArgs description on top of the API.
+> Set this.words with string(s). The strings can be given in the 3 (types.js) .intoArray forms, see .intoArray
+description in types.js.
+
 > Use any combination of arguments to form a string. All invalid arguments will be ignored.
 
 ```javascript
@@ -441,6 +426,13 @@ __________
 
 change log
 ==========
+**0.3.9**
+
+Updated the included types.js to version 1.5.0.
+
+Deprecated .flexArgs. .flexArgs is now included (in the included) types.js and has been renamed to .intoArray.
+So, use .intoArray instead of .flexArgs which will be removed at some point in time.
+___
 **0.3.8**
 
 Added AMD support.
