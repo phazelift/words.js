@@ -1,6 +1,6 @@
 {
   "name": "words.js",
-  "version": "0.3.9",
+  "version": "0.4.0",
   "description": "A library/toolbox for working with words and strings.",
   "main": "words.min.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "library"
   ],
   "author": "Dennis Raymondo <phazelift@gmail.com> (https://github.com/phazelift/)",
-  "license": "GPL-3",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/phazelift/words.js/issues"
   },

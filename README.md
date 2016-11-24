@@ -426,6 +426,12 @@ __________
 
 change log
 ==========
+**0.4.0**
+
+changes lisence to MIT
+
+---
+
 **0.3.9**
 
 Updated the included types.js to version 1.5.0.
@@ -511,5 +517,8 @@ The manual is now more complete and up to date.
 Next up are the Jasmine tests!
 
 __________
+
+### lisence
+MIT
 
 
