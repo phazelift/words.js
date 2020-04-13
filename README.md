@@ -1,14 +1,16 @@
 words.js
 ========
 
-**words.js** is a library/toolbox for working with strings and words. Great for handling command-line or text input,
-educational tools, word-games, text filters, password generators, etc..
+**words.js** is a library/toolbox for working with strings and words. Great for handling command-line or text input, educational tools, word-games, text filters, password generators, etc..
 <br/>
 ___
 
 **a few quick examples:**
 ```javascript
-var words= new Words('pick the words you need with indices');
+import Words from 'words.js';
+
+const words = new Words('pick the words you need with indices');
+
 console.log( words.get(1, 3, -2, 3) );
 // pick words with words
 
@@ -35,7 +37,7 @@ words.set('or shuffle specific words').shuffle(2, 3);
 console.log( words.$ );
 // or seuhlff fiiespcc words (pseudo random)
 
-words.set('Words.startsWith searches for starting words, not characters!');
+words.set('.startsWith searches for the first(delimiting) space after the first word');
 console.log( words.startsWith('Words.') );
 // false
 console.log( words.startsWith('Words.startsWith searches') );
@@ -44,90 +46,36 @@ console.log( words.startsWith('Words.startsWith searches') );
 // more examples below in the API
 ```
 ___
+
 **Dependencies and loading**
 
-words.js includes types.js and strings.js.
+words.js depends on strings.js.
 
-- types.js is a tiny, but essential type-checker/enforcer. It's API can be found at: https://github.com/phazelift/types.js
 - strings.js is a flexible string manipulation library. It's API can be found at: https://github.com/phazelift/strings.js
-
-In the browser you can access them via the following global variables:
-- Types
-- Strings
-- Words
-
-
-**node.js**
-
-You can use `npm install words.js` when you're on node.js.
-
-In npm, words.js, types.js and strings.js can be accessed in the following way:
-```javascript
-var Words	= require('words.js');
-var Types	= require('words.js').Types;
-// to have the non-overloaded strings.js
-var Strings	= require('words.js').Strings;
-```
-
-**AMD**
-
-When using AMD, you can load types.js like so:
-```javascript
-require.config({
-	paths: {
-		'types', [ 'path/to/types.min(.js)' ]
-	}
-});
-
-require( ['types'], function( Types ){
-	console.log( Types.isNumber(0) );
-	// true
-});
-```
 
 ___
 
 Most methods overload strings.js methods, only to focus on words rather than characters.
-Where in strings.js you use shuffle to randomly reorder the characters in a string, in words.js the overloaded
-shuffle function randomly reorders the words in a string, or you can shuffle the characters of a specific word in
-a string, and much more. See the API for some sweet examples.
+Where in strings.js you use shuffle to randomly reorder the characters in a string, in words.js the overloaded shuffle function randomly reorders the words in a string, or you can shuffle the characters of a specific word in a string, and much more. See the API for examples.
 <br/><br/>
-All indexes in words.js are 1 based. Negative indexes can be used in most functions. -1 references the last
-word in the internal words array, 1 references the first word.
+All indexes in words.js are 1 based. Negative indexes can be used in most functions. -1 references the last word in the internal words array, 1 references the first word.
 
 words.js is made for chaining operations on words in strings, most of it's methods return their
 own context. To return the actual value of the internal string/array, one can use `.get()` or `.$` or `.string`.
 ___
-All input and output is type save; you can throw in any type and still get a string if the expected output is of
-type `<string>`. If any method receives an argument of a type it cannot process, the argument will simply be ignored.
+All input and output is type save; you can throw in any type and still get a string if the expected output is of type `<string>`. If any method receives an argument of a type it cannot process, the argument will simply be ignored.
 
-
-All examples are to be found in the API below.
 ___
 API
 ---
 
-If you see `<string>/<number>`, it means you can either enter a String or Number argument, both will be parsed
-correctly.
+If you see `<string>/<number>`, it means you can either enter a String or Number argument, both will be parsed correctly.
 ___
 
-**Words.flexArgs**
-> `Words.flexArgs( arg1, ..., argN )`
-
-***- DEPRECATED!! -***
-
-Use .intoArray instead of .flexArgs.
-
-.flexArgs has been renamed to 'intoArray' and is now part of the included types.js. .intoArray is 100% compatible,
-it shouldn't break any code. .flexArgs still works, but it will be removed from words.js eventually.
-
-See types.js .intoArray for a description.
-___
 **Words.prototype.words**
 > `<array> words`
 
-> The internal array were all (space seperated) words are stored. Better not use directly to avoid bugs, instead
-> use .set() to set, and .get(), .$ and .string to fetch.
+> The internal array were all (space seperated) words are stored. Better not use directly to avoid bugs, instead use .set() to set, and .get(), .$ and .string to fetch.
 
 **Words.prototype.constructor**
 > `<this> constructor( <string>/<number> string= '' )`
@@ -156,8 +104,7 @@ console.log( words.count );
 **Words.prototype.set**
 > `<this> set( <string> string1, ..., stringN )`
 
-> Set this.words with string(s). The strings can be given in the 3 (types.js) .intoArray forms, see .intoArray
-description in types.js.
+> Set this.words with string(s). The strings can be given in the 3 (types.js) .intoArray forms, see .intoArray description in types.js.
 
 > Use any combination of arguments to form a string. All invalid arguments will be ignored.
 
@@ -197,12 +144,9 @@ console.log( words.$ );
 **Words.prototype.xs**
 > `<this> xs( <function> callback(<string> word, <number> index) )`
 
-> Access every index/word of this.words and apply the result of callback to it. After a call to xs, this.words
-> will be changed to the results of the callback.
+> Access every index/word of this.words and apply the result of callback to it. After a call to xs, this.words will be changed to the results of the callback.
 
-> If the callback returns true, word is applied, but you could also return word which has effectively the same result.
-> If the callback returns false or undefined, word will be skipped. Any character, String or Number returned by callback
-> will be applied to index in this.words.
+> If the callback returns true, word is applied, but you could also return word which has effectively the same result. If the callback returns false or undefined, word will be skipped. Any character, String or Number returned by callback will be applied to index in this.words.
 
 ```javascript
 // dispose all words longer than 4 characters
@@ -229,10 +173,7 @@ console.log( words.find('words') );
 **Words.prototype.upper**
 > `<this> upper( <string>/<number> value, [value1, ..., valueN] )`
 
-> Change words or characters to uppercase. If no arguments are given, all words are changed to uppercase.
-> If index is set to 0, all character positions denoted by position, in all words, are changed to uppercase
-> (if alpha of course). If indices is not set to 0, the words found on indices are changed to uppercase. valueN can
-> also be a word, and words can be mixed with indices.
+> Change words or characters to uppercase. If no arguments are given, all words are changed to uppercase. If index is set to 0, all character positions denoted by position, in all words, are changed to uppercase (if alpha of course). If indices is not set to 0, the words found on indices are changed to uppercase. valueN can also be a word, and words can be mixed with indices.
 
 ```javascript
 var words= new Words('you can be very specific with upper and lowercase');
@@ -256,10 +197,7 @@ console.log( words.upper().$ );
 **Words.prototype.reverse**
 > `<this> reverse( <string>/<number> index, [index1, ..., indexN] )`
 
-> Without arguments this.words is reversed; not the characters, like with Strings.reverse(), but the words
-> positions in this.words are reversed. If index is 0, every word is reversed, but will remain on it's original/current index,
-> every additional argument is then ignored. With index or indices given, the characters in the words
-> denoted by indices are reversed.
+> Without arguments this.words is reversed; not the characters, like with Strings.reverse(), but the words positions in this.words are reversed. If index is 0, every word is reversed, but will remain on it's original/current index, every additional argument is then ignored. With index or indices given, the characters in the words denoted by indices are reversed.
 
 ```javascript
 var words= new Words('reverse words positions');
@@ -278,9 +216,7 @@ console.log( words.reverse(1, -1, -2).$ );
 **Words.prototype.shuffle**
 > `<this> shuffle( <string>/<number> index, [index1, ..., indexN] )`
 
-> Shuffles the word on index, if index is given. If index is/are strings, the matching words will be shuffled.
-> If index is 0, every word is shuffled, but will remain on it's current index, following arguments are ignored.
-> Without arguments, all indices are shuffled.
+> Shuffles the word on index, if index is given. If index is/are strings, the matching words will be shuffled. If index is 0, every word is shuffled, but will remain on it's current index, following arguments are ignored. Without arguments, all indices are shuffled.
 
 ```javascript
 // pseudo random
@@ -306,8 +242,7 @@ console.log( words.shuffle(2, -1).$ );
 **Words.prototype.remove**
 > `<this> remove( <string>/<number> indices and or words )`
 
-> Removes any combination of indices or words from this.words. Without arguments remove does nothing.
-> Invalid arguments are ignored
+> Removes any combination of indices or words from this.words. Without arguments remove does nothing. Invalid arguments are ignored
 
 ```javascript
 var words= new Words('removing specific words is very easy');
@@ -318,8 +253,7 @@ console.log( words.remove(2, 3, -2).$ );
 **Words.prototype.pop**
 > `<string> pop( <string>/<number> amount )`
 
-> Removes the last word from this.words if no arguments are given. If amount is valid, amount words will be removed from
-> this.words, starting from the last word going backwards.
+> Removes the last word from this.words if no arguments are given. If amount is valid, amount words will be removed from this.words, starting from the last word going backwards.
 
 > A string of all words 'popped' in reverse order, will be returned.
 
@@ -346,8 +280,7 @@ console.log( words.push( 'string' ).$ );
 > `<this> shift( <string>/<number> amount )`
 
 
-> Removes the first word from this.words if no arguments are given. If amount is valid, amount words will
-> be removed from this.words, starting from the first word going forwards.
+> Removes the first word from this.words if no arguments are given. If amount is valid, amount words will be removed from this.words, starting from the first word going forwards.
 
 ```javascript
 var words= new Words( 'shift means: remove words from the start' );
@@ -426,6 +359,15 @@ __________
 
 change log
 ==========
+**0.4.1**
+
+replaced deprecated code with strings.js dependency
+adds babel transpile stage for higher quality bundle code (improved compatibility)
+upgraded jasmin testing setup
+cleaned up the readme
+
+---
+
 **0.4.0**
 
 changes lisence to MIT
@@ -436,8 +378,7 @@ changes lisence to MIT
 
 Updated the included types.js to version 1.5.0.
 
-Deprecated .flexArgs. .flexArgs is now included (in the included) types.js and has been renamed to .intoArray.
-So, use .intoArray instead of .flexArgs which will be removed at some point in time.
+Deprecated .flexArgs. .flexArgs is now included (in the included) types.js and has been renamed to .intoArray. Use .intoArray instead of .flexArgs which will be removed at some point in time.
 ___
 **0.3.8**
 

@@ -1,6 +1,6 @@
 {
   "name": "words.js",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A library/toolbox for working with words and strings.",
   "main": "words.min.js",
   "scripts": {
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/phazelift/words.js",
   "dependencies": {
-    "types.js": "latest"
+    "strings.js": "latest"
   },
   "devDependencies": {
     "@babel/core": "latest",

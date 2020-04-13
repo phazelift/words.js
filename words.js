@@ -2,18 +2,6 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
@@ -27,6 +15,18 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -56,1216 +56,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   // SOFTWARE.
   "use strict";
 
-  var Chars,
-      Strings,
-      Strings_,
-      Words,
-      Words_,
-      _,
-      mapStringToNumber,
-      type,
-      types,
-      indexOf = [].indexOf;
-
-  types = require("types.js"); //=====================================================================================================
-  //															strings.coffee (version 1.2.3)
-  // returns the amount of successful parseInt's on array
-
-  mapStringToNumber = function mapStringToNumber(array) {
-    var index, j, len, nr, value;
-
-    if (types.notArray(array)) {
-      return 0;
-    }
-
-    for (index = j = 0, len = array.length; j < len; index = ++j) {
-      value = array[index];
-      nr = types.forceNumber(value);
-
-      if (nr["void"]) {
-        return index;
-      }
-
-      array[index] = nr;
-    }
-
-    return array.length;
-  }; //															_ (selection of tools.js)
-
-
-  _ = /*#__PURE__*/function () {
-    _createClass(_, null, [{
-      key: "inRange",
-      value: function inRange(nr, range) {
-        if (types.isNaN(nr = parseInt(nr, 10)) || mapStringToNumber(range) < 2) {
-          return false;
-        }
-
-        return nr >= range[0] && nr <= range[1];
-      }
-    }, {
-      key: "limitNumber",
-      value: function limitNumber(nr, range) {
-        nr = types.forceNumber(nr, 0);
-
-        if (mapStringToNumber(range) < 2) {
-          return nr;
-        }
-
-        if (nr < range[0]) {
-          return range[0];
-        }
-
-        if (nr > range[1]) {
-          return range[1];
-        }
-
-        return nr;
-      }
-    }, {
-      key: "randomNumber",
-      value: function randomNumber(min, max) {
-        if (mapStringToNumber([min, max]) < 2) {
-          return 0;
-        }
-
-        if (max < min) {
-          return min;
-        }
-
-        max = max - min + 1;
-        return Math.floor(Math.random() * max + min);
-      }
-    }, {
-      key: "shuffleArray",
-      value: function shuffleArray(array) {
-        var i, j, length, rand, ref, temp;
-
-        if (types.notArray(array) || array.length < 1) {
-          return [];
-        }
-
-        length = array.length - 1;
-
-        for (i = j = ref = length; ref <= 0 ? j <= 0 : j >= 0; i = ref <= 0 ? ++j : --j) {
-          rand = _.randomNumber(0, i);
-          temp = array[i];
-          array[i] = array[rand];
-          array[rand] = temp;
-        }
-
-        return array;
-      }
-    }, {
-      key: "positiveIndex",
-      value: function positiveIndex(index, max) {
-        if (0 === (index = types.forceNumber(index, 0))) {
-          return false;
-        }
-
-        max = Math.abs(types.forceNumber(max));
-
-        if (Math.abs(index) <= max) {
-          if (index > 0) {
-            return index - 1;
-          }
-
-          return max + index;
-        }
-
-        return false;
-      }
-    }, {
-      key: "insertSort",
-      value: function insertSort(array) {
-        var current, index, j, length, prev, ref;
-        length = array.length - 1;
-
-        for (index = j = 1, ref = length; 1 <= ref ? j <= ref : j >= ref; index = 1 <= ref ? ++j : --j) {
-          current = array[index];
-          prev = index - 1;
-
-          while (prev >= 0 && array[prev] > current) {
-            array[prev + 1] = array[prev];
-            --prev;
-          }
-
-          array[+prev + 1] = current;
-        }
-
-        return array;
-      } // only for sorted arrays
-
-    }, {
-      key: "noDupAndReverse",
-      value: function noDupAndReverse(array) {
-        var index, j, length, newArr, ref;
-        length = array.length - 1;
-        newArr = [];
-
-        for (index = j = ref = length; ref <= 0 ? j <= 0 : j >= 0; index = ref <= 0 ? ++j : --j) {
-          if (newArr[newArr.length - 1] !== array[index]) {
-            newArr.push(array[index]);
-          }
-        }
-
-        return newArr;
-      } // process arguments list to contain only positive indexes, sorted, reversed order, and duplicates removed
-
-    }, {
-      key: "sortNoDupAndReverse",
-      value: function sortNoDupAndReverse(array, maxLength) {
-        var index, j, len, processed, value;
-        processed = [];
-
-        for (index = j = 0, len = array.length; j < len; index = ++j) {
-          value = array[index];
-          value = types.forceNumber(value);
-
-          if (value["void"]) {
-            continue;
-          }
-
-          if (value <= maxLength) {
-            value = _.positiveIndex(value, maxLength);
-          }
-
-          processed.push(types.forceNumber(value, 0));
-        }
-
-        return _.noDupAndReverse(_.insertSort(processed));
-      }
-    }]);
-
-    function _() {
-      _classCallCheck(this, _);
-    }
-
-    return _;
-  }();
-
-  for (type in types) {
-    _[type] = types[type];
-  }
-
-  Chars = function () {
-    //																	Chars (selection of chars.js)
-    var Chars = /*#__PURE__*/function (_ref) {
-      _inherits(Chars, _ref);
-
-      var _super = _createSuper(Chars);
-
-      _createClass(Chars, null, [{
-        key: "ascii",
-        value: function ascii(ordinal) {
-          return String.fromCharCode(_.forceNumber(ordinal));
-        }
-      }, {
-        key: "ordinal",
-        value: function ordinal(_char) {
-          return _.forceNumber(_.forceString(_char).charCodeAt(), 0);
-        }
-      }, {
-        key: "random",
-        value: function random(range) {
-          var max, min;
-          range = _.forceArray(range, Chars.ASCII_RANGE_ALL);
-          min = _.limitNumber(range[0], range);
-          max = _.limitNumber(range[1], range);
-          return Chars.ascii(_.randomNumber(min, max));
-        }
-      }]);
-
-      function Chars() {
-        _classCallCheck(this, Chars);
-
-        return _super.call(this);
-      }
-
-      return Chars;
-    }(_);
-
-    ;
-    Chars.ASCII_RANGE_UPPERCASE = [65, 90];
-    Chars.ASCII_RANGE_LOWERCASE = [97, 122];
-    Chars.ASCII_RANGE_NUMBERS = [48, 57];
-    Chars.ASCII_RANGE_SPECIAL_1 = [32, 47];
-    Chars.ASCII_RANGE_SPECIAL_2 = [58, 64];
-    Chars.ASCII_RANGE_SPECIAL_3 = [91, 96];
-    Chars.ASCII_RANGE_SPECIAL_4 = [123, 126];
-    Chars.ASCII_RANGE_ALL = [32, 126];
-    Chars.REGEXP_SPECIAL_CHARS = ['?', '\\', '[', ']', '(', ')', '*', '+', '.', '/', '|', '^', '$', '<', '>', '-', '&'];
-    return Chars;
-  }.call(this); // end of Chars
-  //																		Strings
-
-
-  Strings_ = /*#__PURE__*/function () {
-    function Strings_() {
-      _classCallCheck(this, Strings_);
-    }
-
-    _createClass(Strings_, null, [{
-      key: "changeCase",
-      // refactor this later, and get rid of the ..., arguments[n] are ~10 times faster.
-      value: function changeCase() {
-        var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        var caseMethod = arguments.length > 1 ? arguments[1] : undefined;
-        var arg, j, k, len, len1, pos;
-
-        if ('' === (string = _.forceString(string))) {
-          return string;
-        }
-
-        for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-          args[_key - 2] = arguments[_key];
-        }
-
-        if (args.length < 1 || args[0] === void 0) {
-          return string[caseMethod]();
-        } else if (_.isNumber(args[0])) {
-          for (j = 0, len = args.length; j < len; j++) {
-            arg = args[j];
-            pos = _.positiveIndex(arg, string.length);
-            string = Strings.xs(string, function (_char2, index) {
-              if (index === pos) {
-                return _char2[caseMethod]();
-              }
-
-              return _char2;
-            });
-          }
-        } else if (_.isString(args[0])) {
-          for (k = 0, len1 = args.length; k < len1; k++) {
-            arg = args[k];
-            string = Strings.replace(string, arg, arg[caseMethod](), 'gi');
-          }
-        }
-
-        return string;
-      }
-    }]);
-
-    return Strings_;
-  }();
-
-  Strings = /*#__PURE__*/function (_Chars) {
-    _inherits(Strings, _Chars);
-
-    var _super2 = _createSuper(Strings);
-
-    _createClass(Strings, null, [{
-      key: "create",
-      value: function create() {
-        var arg, j, len, string;
-        string = '';
-
-        for (j = 0, len = arguments.length; j < len; j++) {
-          arg = arguments[j];
-          string += _.forceString(arg);
-        }
-
-        return string;
-      }
-    }, {
-      key: "get",
-      value: function get(string) {
-        for (var _len2 = arguments.length, positions = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-          positions[_key2 - 1] = arguments[_key2];
-        }
-
-        var argsLength, j, length, pos, ref, result;
-
-        if (arguments.length < 2) {
-          return '';
-        }
-
-        string = _.forceString(string);
-        length = string.length;
-        result = '';
-        argsLength = arguments.length;
-
-        for (pos = j = 1, ref = argsLength; 1 <= ref ? j <= ref : j >= ref; pos = 1 <= ref ? ++j : --j) {
-          pos = _.positiveIndex(arguments[pos], length);
-
-          if (pos !== false) {
-            result += string[pos];
-          }
-        }
-
-        return result;
-      }
-    }, {
-      key: "sort",
-      value: function sort(string) {
-        string = _.forceString(string).trim().split('');
-        return _.insertSort(string).join('');
-      }
-    }, {
-      key: "random",
-      value: function random(amount, charSet) {
-        var i, j, ref, string;
-        amount = _.forceNumber(amount, 1);
-        string = '';
-
-        for (i = j = 1, ref = amount; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-          string += Chars.random(charSet);
-        }
-
-        return string;
-      }
-    }, {
-      key: "times",
-      value: function times(string, amount) {
-        var multi;
-
-        if ('' === (string = _.forceString(string))) {
-          return '';
-        }
-
-        amount = _.forceNumber(amount, 1);
-        multi = '';
-
-        while (amount-- > 0) {
-          multi += string;
-        }
-
-        return multi;
-      }
-    }, {
-      key: "regEscape",
-      value: function regEscape(string) {
-        if ('' === (string = _.forceString(string))) {
-          return string;
-        }
-
-        return Strings.xs(string, function (_char3) {
-          if (indexOf.call(Chars.REGEXP_SPECIAL_CHARS, _char3) >= 0) {
-            return '\\' + _char3;
-          }
-
-          return true;
-        });
-      }
-    }, {
-      key: "empty",
-      value: function empty(string) {
-        if (_.notString(string) || string.length > 0) {
-          return false;
-        }
-
-        return true;
-      }
-    }, {
-      key: "isAlpha",
-      value: function isAlpha(string) {
-        if ('' === (string = _.forceString(string))) {
-          return false;
-        }
-
-        return /^[a-z]*$/ig.test(string);
-      }
-    }, {
-      key: "isNumeric",
-      value: function isNumeric(string) {
-        if ('' === (string = _.forceString(string))) {
-          return false;
-        }
-
-        return /^[0-9]*$/g.test(string);
-      }
-    }, {
-      key: "isAlphaNumeric",
-      value: function isAlphaNumeric(string) {
-        if ('' === (string = _.forceString(string))) {
-          return false;
-        }
-
-        return /^[0-9|a-z]*$/ig.test(string);
-      }
-    }, {
-      key: "isSpecial",
-      value: function isSpecial(string) {
-        if ('' === (string = _.forceString(string))) {
-          return false;
-        }
-
-        return /^[^0-9|a-z]*$/ig.test(string);
-      }
-    }, {
-      key: "isSpace",
-      value: function isSpace(string) {
-        return /^[ \t]+$/g.test(string);
-      }
-    }, {
-      key: "hasUpper",
-      value: function hasUpper(string) {
-        return /[A-Z]+/g.test(string);
-      }
-    }, {
-      key: "isUpper",
-      value: function isUpper(string) {
-        return /^[A-Z]+$/g.test(string);
-      }
-    }, {
-      key: "isLower",
-      value: function isLower(string) {
-        return /^[a-z]+$/g.test(string);
-      }
-    }, {
-      key: "xs",
-      value: function xs() {
-        var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        var callback = arguments.length > 1 ? arguments[1] : undefined;
-        var index, j, length, ref, response, result;
-        string = _.forceString(string);
-
-        if (-1 === (length = string.length - 1)) {
-          return '';
-        }
-
-        callback = _.forceFunction(callback, function (_char4) {
-          return _char4;
-        });
-        result = '';
-
-        for (index = j = 0, ref = length; 0 <= ref ? j <= ref : j >= ref; index = 0 <= ref ? ++j : --j) {
-          if (response = callback(string[index], index)) {
-            if (response === true) {
-              result += string[index];
-            } else if (_.isStringOrNumber(response)) {
-              result += response;
-            }
-          }
-        }
-
-        return result;
-      }
-    }, {
-      key: "copy",
-      value: function copy(string, offset, amount) {
-        offset = _.forceNumber(offset);
-
-        if ('' === (string = _.forceString(string)) || Math.abs(offset) > string.length) {
-          return '';
-        }
-
-        if (offset > 0) {
-          offset -= 1;
-        }
-
-        return string.substr(offset, _.forceNumber(amount, string.length));
-      }
-    }, {
-      key: "replace",
-      value: function replace() {
-        var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        var toReplace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-        var replacement = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
-        var flags = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'g';
-        var ref;
-
-        if (!(_.isStringOrNumber(string) && ((ref = _["typeof"](toReplace)) === 'string' || ref === 'number' || ref === 'regexp'))) {
-          return _.forceString(string);
-        }
-
-        if (_.notRegExp(toReplace)) {
-          toReplace = Strings.regEscape(toReplace + '');
-          toReplace = new RegExp(toReplace, flags); // check if needed -> _.forceString flags
-        }
-
-        return (string + '').replace(toReplace, replacement);
-      }
-    }, {
-      key: "trim",
-      value: function trim(string) {
-        return Strings.replace(string, /^\s+|\s+$/g);
-      }
-    }, {
-      key: "trimLeft",
-      value: function trimLeft(string) {
-        return Strings.replace(string, /^\s+/g);
-      }
-    }, {
-      key: "trimRight",
-      value: function trimRight(string) {
-        return Strings.replace(string, /\s+$/g);
-      }
-    }, {
-      key: "oneSpace",
-      value: function oneSpace(string) {
-        return Strings.replace(string, /\s+/g, ' ');
-      }
-    }, {
-      key: "oneSpaceAndTrim",
-      value: function oneSpaceAndTrim(string) {
-        return Strings.oneSpace(Strings.trim(string));
-      }
-    }, {
-      key: "toCamel",
-      value: function toCamel(string, _char5) {
-        var match;
-        string = _.forceString(string);
-        _char5 = _.forceString(_char5, '-');
-        match = new RegExp(Strings.regEscape(_char5) + '([a-z])', 'ig');
-        return Strings.replace(string, match, function (all, found) {
-          return found.toUpperCase();
-        });
-      }
-    }, {
-      key: "unCamel",
-      value: function unCamel(string, insertion) {
-        string = _.forceString(string);
-        insertion = _.forceString(insertion, '-');
-        return Strings.replace(string, /([A-Z])/g, insertion + '$1').toLowerCase();
-      }
-    }, {
-      key: "shuffle",
-      value: function shuffle(string) {
-        string = _.forceString(string);
-        return _.shuffleArray((string + '').split('')).join('');
-      }
-    }, {
-      key: "find",
-      value: function find(string, toFind, flags) {
-        var indices, result;
-        indices = [];
-
-        if ('' === (string = _.forceString(string))) {
-          return indices;
-        }
-
-        flags = _.forceString(flags, 'g');
-
-        if (_.isStringOrNumber(toFind)) {
-          toFind = new RegExp(Strings.regEscape(toFind + ''), flags);
-        } else if (_.isRegExp(toFind)) {
-          toFind = new RegExp(toFind.source, flags);
-        } else {
-          return indices;
-        } // check for global flag, without it a while/exec will hang the system..
-
-
-        if (toFind.global) {
-          while (result = toFind.exec(string)) {
-            indices.push(result.index + 1);
-          }
-        } else {
-          if (result = toFind.exec(string)) {
-            indices.push(result.index + 1);
-          }
-        }
-
-        return indices;
-      }
-    }, {
-      key: "count",
-      value: function count(string, toFind) {
-        return Strings.find(string, toFind).length;
-      }
-    }, {
-      key: "contains",
-      value: function contains(string, substring) {
-        return Strings.count(string, substring) > 0;
-      }
-    }, {
-      key: "between",
-      value: function between(string, before, after) {
-        var ref, reg;
-
-        if (!_.allStringOrNumber(string, before, after)) {
-          return '';
-        }
-
-        before = Strings.regEscape(before + '');
-        after = Strings.regEscape(after + '');
-        reg = new RegExp(before + '(.+)' + after);
-        return ((ref = reg.exec(string + '')) != null ? ref[1] : void 0) || '';
-      }
-    }, {
-      key: "slice",
-      value: function slice(string, start, size) {
-        string = _.forceString(string);
-        start = _.forceNumber(start || 1);
-
-        if (false !== (start = _.positiveIndex(start, string.length))) {
-          size = _.forceNumber(size);
-          return string.slice(start, start + size);
-        }
-
-        return '';
-      }
-    }, {
-      key: "truncate",
-      value: function truncate(string, length, appendix) {
-        string = _.forceString(string);
-        length = _.forceNumber(length, string.length);
-        string = Strings.slice(string, 1, length);
-        return string + _.forceString(appendix);
-      }
-    }, {
-      key: "pop",
-      value: function pop(string, amount) {
-        string = _.forceString(string);
-        amount = _.forceNumber(amount, 1);
-        return string.slice(0, -Math.abs(amount));
-      }
-    }, {
-      key: "split",
-      value: function split(string, delimiter) {
-        var array, j, len, result, word;
-        string = Strings.oneSpaceAndTrim(string);
-        result = [];
-
-        if (string.length < 1) {
-          return result;
-        }
-
-        delimiter = _.forceString(delimiter, ' ');
-        array = string.split(delimiter[0] || '');
-
-        for (j = 0, len = array.length; j < len; j++) {
-          word = array[j];
-
-          if (word.match(/^\s$/)) {
-            continue;
-          }
-
-          result.push(Strings.trim(word));
-        }
-
-        return result;
-      }
-    }, {
-      key: "reverse",
-      value: function reverse() {
-        var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        var ch, j, length, ref, reversed;
-        string = _.forceString(string);
-
-        if ((length = string.length - 1) < 1) {
-          return string;
-        }
-
-        reversed = '';
-
-        for (ch = j = ref = length; ref <= 0 ? j <= 0 : j >= 0; ch = ref <= 0 ? ++j : --j) {
-          reversed += string[ch];
-        }
-
-        return reversed;
-      }
-    }, {
-      key: "upper",
-      value: function upper(string) {
-        var _Strings_;
-
-        for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-          args[_key3 - 1] = arguments[_key3];
-        }
-
-        return (_Strings_ = Strings_).changeCase.apply(_Strings_, [string, 'toUpperCase'].concat(args));
-      }
-    }, {
-      key: "lower",
-      value: function lower(string) {
-        var _Strings_2;
-
-        for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
-          args[_key4 - 1] = arguments[_key4];
-        }
-
-        return (_Strings_2 = Strings_).changeCase.apply(_Strings_2, [string, 'toLowerCase'].concat(args));
-      }
-    }, {
-      key: "insert",
-      value: function insert(string, insertion) {
-        for (var _len5 = arguments.length, positions = new Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
-          positions[_key5 - 2] = arguments[_key5];
-        }
-
-        var index, j, posCount, ref;
-
-        if ('' === (string = _.forceString(string)) || '' === (insertion = _.forceString(insertion))) {
-          return string;
-        }
-
-        positions = _.sortNoDupAndReverse(positions, string.length);
-        posCount = mapStringToNumber(positions) - 1;
-
-        if (0 > posCount) {
-          return string;
-        }
-
-        for (index = j = 0, ref = posCount; 0 <= ref ? j <= ref : j >= ref; index = 0 <= ref ? ++j : --j) {
-          index = positions[index];
-
-          if (index > string.length) {
-            string = string + insertion;
-            continue;
-          }
-
-          string = string.substr(0, index) + insertion + string.substr(index);
-        }
-
-        return string;
-      }
-    }, {
-      key: "removeRange",
-      value: function removeRange(string, offset, amount) {
-        var endpoint;
-        string = _.forceString(string);
-
-        if (string === '' || false === (offset = _.positiveIndex(offset, string.length)) || 0 > (amount = _.forceNumber(amount, 1))) {
-          return string;
-        }
-
-        endpoint = offset + amount;
-        return Strings.xs(string, function (_char6, index) {
-          if (index < offset || index >= endpoint) {
-            return true;
-          }
-        });
-      }
-    }, {
-      key: "removePos",
-      value: function removePos(string) {
-        var pos;
-
-        if ('' === (string = _.forceString(string))) {
-          return '';
-        }
-
-        for (var _len6 = arguments.length, positions = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
-          positions[_key6 - 1] = arguments[_key6];
-        }
-
-        pos = positions.map(function (value, index) {
-          return _.positiveIndex(value, string.length);
-        });
-        return Strings.xs(string, function (_char7, index) {
-          if (!(indexOf.call(pos, index) >= 0)) {
-            return true;
-          }
-        });
-      }
-    }, {
-      key: "remove",
-      value: function remove() {
-        var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        var j, len, remove;
-
-        for (var _len7 = arguments.length, toRemove = new Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {
-          toRemove[_key7 - 1] = arguments[_key7];
-        }
-
-        if ('' === (string = _.forceString(string)) || toRemove.length < 1) {
-          return string;
-        }
-
-        for (j = 0, len = toRemove.length; j < len; j++) {
-          remove = toRemove[j];
-          string = Strings.replace(string, remove);
-        }
-
-        return string;
-      }
-    }, {
-      key: "startsWith",
-      value: function startsWith(string, start) {
-        if ('' === (string = _.forceString(string)) || '' === (start = _.forceString(start))) {
-          return false;
-        }
-
-        start = new RegExp('^' + Strings.regEscape(start));
-        return start.test(string);
-      }
-    }, {
-      key: "endsWith",
-      value: function endsWith(string, ending) {
-        if ('' === (string = _.forceString(string)) || '' === (ending = _.forceString(ending))) {
-          return false;
-        }
-
-        ending = new RegExp(Strings.regEscape(ending) + '$');
-        return ending.test(string);
-      } // test below this line:
-
-    }, {
-      key: "wrap",
-      value: function wrap() {
-        var prepend = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        var append = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-        var wrapper;
-
-        wrapper = function wrapper(string) {
-          return Strings.create(prepend, string, append);
-        };
-
-        wrapper.wrap = function () {
-          var outerPrepend = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-          var outerAppend = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-          prepend = _.forceString(outerPrepend) + prepend;
-          return append += _.forceString(outerAppend);
-        };
-
-        return wrapper;
-      }
-    }]);
-
-    function Strings() {
-      var _this;
-
-      _classCallCheck(this, Strings);
-
-      _this = _super2.call(this);
-
-      _this.set.apply(_assertThisInitialized(_this), arguments);
-
-      _this.wrapMethod = null;
-      _this.crop = _this.slice;
-      return _this;
-    }
-
-    _createClass(Strings, [{
-      key: "set",
-      value: function set() {
-        this.string = Strings.create.apply(this, arguments);
-        return this;
-      }
-    }, {
-      key: "sort",
-      value: function sort() {
-        this.string = Strings.sort(this.string);
-        return this;
-      }
-    }, {
-      key: "random",
-      value: function random(amount, charSet) {
-        this.string = Strings.random(amount, charSet);
-        return this;
-      }
-    }, {
-      key: "xs",
-      value: function xs(callback) {
-        this.string = Strings.xs(this.string, callback);
-        return this;
-      }
-    }, {
-      key: "times",
-      value: function times() {
-        var _times = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-
-        this.string = Strings.times(this.string, _times);
-        return this;
-      }
-    }, {
-      key: "get",
-      value: function get() {
-        var j, len, position, string;
-
-        if (arguments.length > 0) {
-          string = '';
-
-          for (j = 0, len = arguments.length; j < len; j++) {
-            position = arguments[j];
-            position = _.positiveIndex(position, this.length);
-
-            if (position !== false) {
-              string += this.string[position];
-            }
-          }
-
-          return string;
-        }
-
-        return this.string;
-      }
-    }, {
-      key: "copy",
-      value: function copy(offset, amount) {
-        return Strings.copy(this.string, offset, amount);
-      }
-    }, {
-      key: "empty",
-      value: function empty() {
-        return Strings.empty(this.string);
-      }
-    }, {
-      key: "isAlpha",
-      value: function isAlpha() {
-        return Strings.isAlpha(this.string);
-      }
-    }, {
-      key: "isNumeric",
-      value: function isNumeric() {
-        return Strings.isNumeric(this.string);
-      }
-    }, {
-      key: "isAlphaNumeric",
-      value: function isAlphaNumeric() {
-        return Strings.isAlphaNumeric(this.string);
-      }
-    }, {
-      key: "isSpecial",
-      value: function isSpecial() {
-        return Strings.isSpecial(this.string);
-      }
-    }, {
-      key: "isSpace",
-      value: function isSpace() {
-        return Strings.isSpace(this.string);
-      }
-    }, {
-      key: "isUpper",
-      value: function isUpper() {
-        return Strings.isUpper(this.string);
-      }
-    }, {
-      key: "hasUpper",
-      value: function hasUpper() {
-        return Strings.hasUpper(this.string);
-      }
-    }, {
-      key: "isLower",
-      value: function isLower() {
-        return Strings.isLower(this.string);
-      }
-    }, {
-      key: "push",
-      value: function push() {
-        this.string = this.string + Strings.create.apply(this, arguments);
-        return this;
-      }
-    }, {
-      key: "prepend",
-      value: function prepend() {
-        this.string = Strings.create.apply(this, arguments) + this.string;
-        return this;
-      }
-    }, {
-      key: "pop",
-      value: function pop(amount) {
-        this.string = Strings.pop(this.string, amount);
-        return this;
-      }
-    }, {
-      key: "insert",
-      value: function insert(string) {
-        for (var _len8 = arguments.length, positions = new Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {
-          positions[_key8 - 1] = arguments[_key8];
-        }
-
-        this.string = Strings.insert.apply(Strings, [this.string, string].concat(positions));
-        return this;
-      }
-    }, {
-      key: "trim",
-      value: function trim() {
-        this.string = Strings.trim(this.string);
-        return this;
-      }
-    }, {
-      key: "trimLeft",
-      value: function trimLeft() {
-        this.string = Strings.trimLeft(this.string);
-        return this;
-      }
-    }, {
-      key: "trimRight",
-      value: function trimRight() {
-        this.string = Strings.trimRight(this.string);
-        return this;
-      }
-    }, {
-      key: "oneSpace",
-      value: function oneSpace() {
-        this.string = Strings.oneSpace(this.string);
-        return this;
-      }
-    }, {
-      key: "oneSpaceAndTrim",
-      value: function oneSpaceAndTrim() {
-        this.string = Strings.oneSpaceAndTrim(this.string);
-        return this;
-      }
-    }, {
-      key: "find",
-      value: function find(string) {
-        return Strings.find(this.string, string);
-      }
-    }, {
-      key: "count",
-      value: function count(string) {
-        return Strings.count(this.string, string);
-      }
-    }, {
-      key: "contains",
-      value: function contains(string) {
-        return Strings.contains(this.string, string);
-      }
-    }, {
-      key: "between",
-      value: function between(before, after) {
-        return Strings.between(this.string, before, after);
-      }
-    }, {
-      key: "slice",
-      value: function slice(start, size) {
-        this.string = Strings.slice(this.string, start, size);
-        return this;
-      }
-    }, {
-      key: "truncate",
-      value: function truncate(size, suffix) {
-        this.string = Strings.truncate(this.string, size, suffix);
-        return this;
-      }
-    }, {
-      key: "remove",
-      value: function remove() {
-        for (var _len9 = arguments.length, strings = new Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
-          strings[_key9] = arguments[_key9];
-        }
-
-        this.string = Strings.remove.apply(Strings, [this.string].concat(strings));
-        return this;
-      }
-    }, {
-      key: "removeRange",
-      value: function removeRange(offset, amount) {
-        this.string = Strings.removeRange(this.string, offset, amount);
-        return this;
-      }
-    }, {
-      key: "removePos",
-      value: function removePos() {
-        for (var _len10 = arguments.length, positions = new Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {
-          positions[_key10] = arguments[_key10];
-        }
-
-        this.string = Strings.removePos.apply(Strings, [this.string].concat(positions));
-        return this;
-      }
-    }, {
-      key: "replace",
-      value: function replace(subString, replacement, flags) {
-        this.string = Strings.replace(this.string, subString, replacement, flags);
-        return this;
-      }
-    }, {
-      key: "reverse",
-      value: function reverse() {
-        this.string = Strings.reverse(this.string);
-        return this;
-      }
-    }, {
-      key: "upper",
-      value: function upper() {
-        for (var _len11 = arguments.length, args = new Array(_len11), _key11 = 0; _key11 < _len11; _key11++) {
-          args[_key11] = arguments[_key11];
-        }
-
-        this.string = Strings.upper.apply(Strings, [this.string].concat(args));
-        return this;
-      }
-    }, {
-      key: "lower",
-      value: function lower() {
-        for (var _len12 = arguments.length, args = new Array(_len12), _key12 = 0; _key12 < _len12; _key12++) {
-          args[_key12] = arguments[_key12];
-        }
-
-        this.string = Strings.lower.apply(Strings, [this.string].concat(args));
-        return this;
-      }
-    }, {
-      key: "shuffle",
-      value: function shuffle() {
-        this.string = Strings.shuffle(this.string);
-        return this;
-      }
-    }, {
-      key: "toCamel",
-      value: function toCamel(_char8) {
-        this.string = Strings.toCamel(this.string, _char8);
-        return this;
-      }
-    }, {
-      key: "unCamel",
-      value: function unCamel(insertion) {
-        this.string = Strings.unCamel(this.string, insertion);
-        return this;
-      }
-    }, {
-      key: "startsWith",
-      value: function startsWith(start) {
-        return Strings.startsWith(this.string, start);
-      }
-    }, {
-      key: "endsWith",
-      value: function endsWith(ending) {
-        return Strings.endsWith(this.string, ending);
-      }
-    }, {
-      key: "setWrap",
-      value: function setWrap(prepend, append) {
-        if (_.isNull(this.wrapMethod)) {
-          this.wrapMethod = Strings.wrap(prepend, append);
-        } else {
-          this.wrapMethod.wrap(prepend, append);
-        }
-
-        return this;
-      }
-    }, {
-      key: "removeWrap",
-      value: function removeWrap() {
-        this.wrapMethod = null;
-        return this;
-      }
-    }, {
-      key: "applyWrap",
-      value: function applyWrap(prepend, append) {
-        this.string = this.setWrap(prepend, append).wrap;
-        this.removeWrap();
-        return this;
-      }
-    }]);
-
-    return Strings;
-  }(Chars);
-
-  Object.defineProperty(Strings.prototype, '$', {
-    get: function get() {
-      return this.get();
-    }
-  });
-  Object.defineProperty(Strings.prototype, 'length', {
-    get: function get() {
-      return this.string.length;
-    }
-  });
-  Object.defineProperty(Strings.prototype, 'wrap', {
-    get: function get() {
-      if (!_.isNull(this.wrapMethod)) {
-        return this.wrapMethod(this.string);
-      }
-
-      return this.string;
-    }
-  }); // aliases:
-
-  Strings.types = types;
-  Strings.Chars = Chars;
-  Strings.crop = Strings.slice;
-  Strings.prototype.crop = Strings.prototype.slice;
-  Strings.prototype.append = Strings.prototype.push;
+  var Chars, Strings, Words, Words_, _, types;
+
+  Strings = _ = require("strings.js");
+  types = Strings.Types;
+  Chars = Strings.Chars;
 
   Words_ = function () {
-    //																end of Strings
-    //=====================================================================================================
-    //																Words
     var Words_ = /*#__PURE__*/function () {
       function Words_() {
         _classCallCheck(this, Words_);
@@ -1274,12 +71,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(Words_, null, [{
         key: "stringsFromArray",
         value: function stringsFromArray(array) {
-          var j, len, ref, strings, value;
+          var i, len, ref, strings, value;
           strings = [];
           ref = _.forceArray(array);
 
-          for (j = 0, len = ref.length; j < len; j++) {
-            value = ref[j];
+          for (i = 0, len = ref.length; i < len; i++) {
+            value = ref[i];
 
             if (_.isString(value)) {
               strings.push(value);
@@ -1291,12 +88,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "numbersFromArray",
         value: function numbersFromArray(array) {
-          var j, len, numbers, ref, value;
+          var i, len, numbers, ref, value;
           numbers = [];
           ref = _.forceArray(array);
 
-          for (j = 0, len = ref.length; j < len; j++) {
-            value = ref[j];
+          for (i = 0, len = ref.length; i < len; i++) {
+            value = ref[i];
 
             if (_.isNumber(value)) {
               numbers.push(value + 0);
@@ -1309,7 +106,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "changeCase",
         value: function changeCase(method, args) {
-          var index, indices, j, k, len, len1, pos, ref, results, results1, words;
+          var i, index, indices, j, len, len1, pos, ref, results, results1, words;
           words = Words_.stringsFromArray(args);
           indices = Words_.numbersFromArray(args);
 
@@ -1323,13 +120,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             // words[indices] (characters)
             results = [];
 
-            for (j = 0, len = indices.length; j < len; j++) {
-              pos = indices[j];
+            for (i = 0, len = indices.length; i < len; i++) {
+              pos = indices[i];
               results.push(function () {
-                var k, ref, results1;
+                var j, ref, results1;
                 results1 = [];
 
-                for (index = k = 0, ref = this.count - 1; 0 <= ref ? k <= ref : k >= ref; index = 0 <= ref ? ++k : --k) {
+                for (index = j = 0, ref = this.count - 1; 0 <= ref ? j <= ref : j >= ref; index = 0 <= ref ? ++j : --j) {
                   results1.push(this.words[index] = Strings[method](this.words[index], pos));
                 }
 
@@ -1344,8 +141,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               indices = function () {
                 var results1 = [];
 
-                for (var k = 0, ref = this.count; 0 <= ref ? k <= ref : k >= ref; 0 <= ref ? k++ : k--) {
-                  results1.push(k);
+                for (var j = 0, ref = this.count; 0 <= ref ? j <= ref : j >= ref; 0 <= ref ? j++ : j--) {
+                  results1.push(j);
                 }
 
                 return results1;
@@ -1354,8 +151,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
             results1 = [];
 
-            for (k = 0, len1 = indices.length; k < len1; k++) {
-              index = indices[k];
+            for (j = 0, len1 = indices.length; j < len1; j++) {
+              index = indices[j];
               index = _.positiveIndex(index, this.count);
               results1.push(this.words[index] = Strings[method](this.words[index]));
             }
@@ -1385,30 +182,32 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   Words = /*#__PURE__*/function (_Strings2) {
     _inherits(Words, _Strings2);
 
-    var _super3 = _createSuper(Words);
+    var _super = _createSuper(Words);
 
     function Words() {
-      var _this2;
+      var _this;
 
-      for (var _len13 = arguments.length, args = new Array(_len13), _key13 = 0; _key13 < _len13; _key13++) {
-        args[_key13] = arguments[_key13];
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
       }
 
       _classCallCheck(this, Words);
 
-      _this2 = _super3.call(this); // @set args...
+      _this = _super.call(this);
 
-      return _possibleConstructorReturn(_this2, _this2.set.apply(_assertThisInitialized(_this2), arguments));
+      _this.set.apply(_assertThisInitialized(_this), arguments);
+
+      return _this;
     }
 
     _createClass(Words, [{
       key: "set",
       value: function set() {
-        for (var _len14 = arguments.length, args = new Array(_len14), _key14 = 0; _key14 < _len14; _key14++) {
-          args[_key14] = arguments[_key14];
+        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
         }
 
-        var arg, j, k, len, len1, ref, str;
+        var arg, i, j, len, len1, ref, str;
         this.words = [];
         args = _.intoArray.apply(this, args);
 
@@ -1416,12 +215,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           return this;
         }
 
-        for (j = 0, len = args.length; j < len; j++) {
-          arg = args[j];
+        for (i = 0, len = args.length; i < len; i++) {
+          arg = args[i];
           ref = Strings.split(Strings.create(arg), Words_.delimiter);
 
-          for (k = 0, len1 = ref.length; k < len1; k++) {
-            str = ref[k];
+          for (j = 0, len1 = ref.length; j < len1; j++) {
+            str = ref[j];
             this.words.push(str);
           }
         }
@@ -1431,7 +230,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "get",
       value: function get() {
-        var index, j, len, string;
+        var i, index, len, string;
 
         if (arguments.length < 1) {
           return this.words.join(Words_.delimiter);
@@ -1439,8 +238,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         string = '';
 
-        for (j = 0, len = arguments.length; j < len; j++) {
-          index = arguments[j];
+        for (i = 0, len = arguments.length; i < len; i++) {
+          index = arguments[i];
           index = _.positiveIndex(index, this.count);
 
           if (index !== false) {
@@ -1456,7 +255,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {
           return true;
         };
-        var index, j, len, ref, response, result, word;
+        var i, index, len, ref, response, result, word;
 
         if (_.notFunction(callback) || this.count < 1) {
           return this;
@@ -1465,7 +264,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         result = [];
         ref = this.words;
 
-        for (index = j = 0, len = ref.length; j < len; index = ++j) {
+        for (index = i = 0, len = ref.length; i < len; index = ++i) {
           word = ref[index];
 
           if (response = callback(word, index)) {
@@ -1513,24 +312,24 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "reverse",
       value: function reverse() {
-        var _this3 = this;
+        var _this2 = this;
 
-        var arg, j, len;
+        var arg, i, len;
 
         if ((arguments != null ? arguments[0] : void 0) === 0) {
           this.xs(function (word) {
             return Strings.reverse(word);
           });
         } else if (arguments.length > 0) {
-          for (j = 0, len = arguments.length; j < len; j++) {
-            arg = arguments[j];
+          for (i = 0, len = arguments.length; i < len; i++) {
+            arg = arguments[i];
             Words_.applyToValidIndex(arg, this.count, function (index) {
-              return _this3.words[index] = Strings.reverse(_this3.words[index]);
+              return _this2.words[index] = Strings.reverse(_this2.words[index]);
             });
           }
         } else {
           this.xs(function (word, index) {
-            return _this3.get(_this3.count - index);
+            return _this2.get(_this2.count - index);
           });
         }
 
@@ -1539,14 +338,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "shuffle",
       value: function shuffle(selection) {
-        var _this4 = this;
+        var _this3 = this;
 
-        var arg, j, k, len, len1;
+        var arg, i, j, len, len1;
 
         if (selection != null) {
           if (_.isString(selection)) {
-            for (j = 0, len = arguments.length; j < len; j++) {
-              arg = arguments[j];
+            for (i = 0, len = arguments.length; i < len; i++) {
+              arg = arguments[i];
               this.xs(function (word, index) {
                 if (word === arg) {
                   return Strings.shuffle(word);
@@ -1560,10 +359,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               return Strings.shuffle(word);
             });
           } else {
-            for (k = 0, len1 = arguments.length; k < len1; k++) {
-              arg = arguments[k];
+            for (j = 0, len1 = arguments.length; j < len1; j++) {
+              arg = arguments[j];
               Words_.applyToValidIndex(arg, this.count, function (index) {
-                return _this4.words[index] = Strings.shuffle(_this4.words[index]);
+                return _this3.words[index] = Strings.shuffle(_this3.words[index]);
               });
             }
           }
@@ -1582,7 +381,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "remove",
       value: function remove() {
-        var arg, args, index, j, k, len, len1;
+        var arg, args, i, index, j, len, len1;
 
         if (arguments.length < 1) {
           return this;
@@ -1590,8 +389,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         args = [];
 
-        for (j = 0, len = arguments.length; j < len; j++) {
-          arg = arguments[j];
+        for (i = 0, len = arguments.length; i < len; i++) {
+          arg = arguments[i];
 
           if (_.isString(arg)) {
             args.unshift(arg);
@@ -1602,7 +401,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         args = _.noDupAndReverse(_.insertSort(args));
 
-        for (index = k = 0, len1 = args.length; k < len1; index = ++k) {
+        for (index = j = 0, len1 = args.length; j < len1; index = ++j) {
           arg = args[index];
 
           if (_.isNumber(arg)) {
@@ -1625,11 +424,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "pop",
       value: function pop(amount) {
-        var j, n, pop, popped, ref;
+        var i, n, pop, popped, ref;
         amount = Math.abs(_.forceNumber(amount, 1));
         popped = '';
 
-        for (n = j = 1, ref = amount; 1 <= ref ? j <= ref : j >= ref; n = 1 <= ref ? ++j : --j) {
+        for (n = i = 1, ref = amount; 1 <= ref ? i <= ref : i >= ref; n = 1 <= ref ? ++i : --i) {
           pop = this.words.pop();
 
           if (pop !== void 0) {
@@ -1642,10 +441,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "push",
       value: function push() {
-        var arg, j, len;
+        var arg, i, len;
 
-        for (j = 0, len = arguments.length; j < len; j++) {
-          arg = arguments[j];
+        for (i = 0, len = arguments.length; i < len; i++) {
+          arg = arguments[i];
 
           if ('' !== (arg = _.forceString(arg))) {
             this.words.push(Strings.trim(arg));
@@ -1657,10 +456,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "shift",
       value: function shift(amount) {
-        var j, n, ref;
+        var i, n, ref;
         amount = _.forceNumber(amount, 1);
 
-        for (n = j = 1, ref = amount; 1 <= ref ? j <= ref : j >= ref; n = 1 <= ref ? ++j : --j) {
+        for (n = i = 1, ref = amount; 1 <= ref ? i <= ref : i >= ref; n = 1 <= ref ? ++i : --i) {
           this.words.shift();
         }
 
@@ -1669,11 +468,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "prepend",
       value: function prepend() {
-        var arg, j, len, pos;
+        var arg, i, len, pos;
         pos = 0;
 
-        for (j = 0, len = arguments.length; j < len; j++) {
-          arg = arguments[j];
+        for (i = 0, len = arguments.length; i < len; i++) {
+          arg = arguments[i];
 
           if ('' !== (arg = _.forceString(arg))) {
             this.words.splice(pos, 0, Strings.trim(arg));
@@ -1686,16 +485,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "insert",
       value: function insert(index) {
-        var j, len, pos, word;
+        var i, len, pos, word;
         index = _.positiveIndex(index, this.count);
         pos = 0;
 
-        for (var _len15 = arguments.length, words = new Array(_len15 > 1 ? _len15 - 1 : 0), _key15 = 1; _key15 < _len15; _key15++) {
-          words[_key15 - 1] = arguments[_key15];
+        for (var _len3 = arguments.length, words = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+          words[_key3 - 1] = arguments[_key3];
         }
 
-        for (j = 0, len = words.length; j < len; j++) {
-          word = words[j];
+        for (i = 0, len = words.length; i < len; i++) {
+          word = words[i];
 
           if ('' !== (word = _.forceString(word))) {
             this.words.splice(index + pos, 0, Strings.trim(word));
@@ -1708,7 +507,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "replace",
       value: function replace(selection) {
-        var _this5 = this;
+        var _this4 = this;
 
         var replacement = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
@@ -1718,7 +517,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         if (_.isNumber(selection)) {
           Words_.applyToValidIndex(selection, this.count, function (index) {
-            return _this5.words.splice(index, 1, replacement);
+            return _this4.words.splice(index, 1, replacement);
           });
         } else {
           this.xs(function (word) {
@@ -1743,7 +542,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "startsWith",
       value: function startsWith(start) {
-        var _this6 = this;
+        var _this5 = this;
 
         var result;
 
@@ -1754,7 +553,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         result = true;
         start = new Words(start);
         start.xs(function (word, index) {
-          if (word !== _this6.words[index]) {
+          if (word !== _this5.words[index]) {
             return result = false;
           }
         });
@@ -1763,7 +562,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }, {
       key: "endsWith",
       value: function endsWith(end) {
-        var count, index, j, ref, result;
+        var count, i, index, ref, result;
 
         if ('' === (end = _.forceString(end))) {
           return false;
@@ -1773,7 +572,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         count = 1;
         end = new Words(end);
 
-        for (index = j = ref = end.count; ref <= 1 ? j <= 1 : j >= 1; index = ref <= 1 ? ++j : --j) {
+        for (index = i = ref = end.count; ref <= 1 ? i <= 1 : i >= 1; index = ref <= 1 ? ++i : --i) {
           if (end.get(index) !== this.words[this.count - count++]) {
             result = false;
           }
