@@ -25,87 +25,9 @@
 #
 
 "use strict"
-#=====================================================================================================
-#														types.coffee (types.js v1.5.0)
 
-instanceOf	= ( type, value ) -> value instanceof type
-typeOf		= ( value, type= 'object' ) -> typeof value is type
+types= require "types.js"
 
-LITERALS=
-	'Boolean'	: false
-	'String'		: ''
-	'Object'		: {}
-	'Array'		: []
-	'Function'	: ->
-	'Number'		: do ->
-		number= new Number
-		number.void= true
-		return number
-
-TYPES=
-	'Undefined'		: ( value ) -> value is undefined
-	'Null'			: ( value ) -> value is null
-	'Function'		: ( value ) -> typeOf value, 'function'
-	'Boolean'		: ( value ) -> typeOf value, 'boolean'
-	'String'			: ( value ) -> typeOf value, 'string'
-	'Array'			: ( value ) -> typeOf(value) and instanceOf Array, value
-	'RegExp'			: ( value ) -> typeOf(value) and instanceOf RegExp, value
-	'Date'			: ( value ) -> typeOf(value) and instanceOf Date, value
-	'Number'			: ( value ) -> typeOf(value, 'number') and (value is value) or ( typeOf(value) and instanceOf(Number, value) )
-	'Object'			: ( value ) -> typeOf(value) and (value isnt null) and not instanceOf(Boolean, value) and not instanceOf(Number, value) and not instanceOf(Array, value) and not instanceOf(RegExp, value) and not instanceOf(Date, value)
-	'NaN'				: ( value ) -> typeOf(value, 'number') and (value isnt value)
-	'Defined'		: ( value ) -> value isnt undefined
-
-TYPES.StringOrNumber= (value) -> TYPES.String(value) or TYPES.Number(value)
-
-Types= _=
-	parseIntBase: 10
-
-
-createForce= ( type ) ->
-
-	convertType= ( value ) ->
-		switch type
-			when 'Number' then return value if (_.isNumber value= parseInt value, _.parseIntBase) and not value.void
-			when 'String' then return value+ '' if _.isStringOrNumber value
-			else return value if Types[ 'is'+ type ] value
-
-	return ( value, replacement ) ->
-
-		return value if value? and undefined isnt value= convertType value
-		return replacement if replacement? and undefined isnt replacement= convertType replacement
-		return LITERALS[ type ]
-
-
-testValues= ( predicate, breakState, values= [] ) ->
-	return ( predicate is TYPES.Undefined ) if values.length < 1
-	for value in values
-		return breakState if predicate(value) is breakState
-	return not breakState
-
-
-breakIfEqual= true
-do -> for name, predicate of TYPES then do ( name, predicate ) ->
-
-	Types[ 'is'+ name ]	= predicate
-	Types[ 'not'+ name ]	= ( value ) -> not predicate value
-	Types[ 'has'+ name ]	= -> testValues predicate, breakIfEqual, arguments
-	Types[ 'all'+ name ]	= -> testValues predicate, not breakIfEqual, arguments
-	Types[ 'force'+ name ]= createForce name if name of LITERALS
-
-Types.intoArray= ( args... ) ->
-	if args.length < 2
-		if _.isString args[ 0 ]
-			args= args.join( '' ).replace( /^\s+|\s+$/g, '' ).replace( /\s+/g, ' ' ).split ' '
-		else if _.isArray args[ 0 ]
-			args= args[ 0 ]
-	return args
-
-Types.typeof= ( value ) ->
-	for name, predicate of TYPES
-		return name.toLowerCase() if predicate( value ) is true
-
-#															end of types.coffee
 
 #=====================================================================================================
 
@@ -114,23 +36,23 @@ Types.typeof= ( value ) ->
 
 # returns the amount of successful parseInt's on array
 mapStringToNumber= ( array ) ->
-	return 0 if _.notArray array
+	return 0 if types.notArray array
 	for value, index in array
-		nr= _.forceNumber value
+		nr= types.forceNumber value
 		return index if nr.void
 		array[ index ]= nr
 	return array.length
 
 #															_ (selection of tools.js)
 
-class _ extends Types
+class _
 
 	@inRange: ( nr, range ) ->
-		return false if (_.isNaN nr= parseInt nr, 10) or (mapStringToNumber( range ) < 2)
+		return false if (types.isNaN nr= parseInt nr, 10) or (mapStringToNumber( range ) < 2)
 		return (nr >= range[0]) and (nr <= range[1])
 
 	@limitNumber= ( nr, range ) ->
-		nr= _.forceNumber nr, 0
+		nr= types.forceNumber nr, 0
 		return nr if mapStringToNumber( range ) < 2
 		return range[0] if nr < range[0]
 		return range[1] if nr > range[1]
@@ -143,7 +65,7 @@ class _ extends Types
 		return Math.floor ( Math.random()* max )+ min
 
 	@shuffleArray: ( array ) ->
-		return [] if _.notArray(array) or array.length < 1
+		return [] if types.notArray(array) or array.length < 1
 		length= array.length- 1
 		for i in [length..0]
 			rand= _.randomNumber 0, i
@@ -153,8 +75,8 @@ class _ extends Types
 		return array
 
 	@positiveIndex: ( index, max ) ->
-		return false if 0 is index= _.forceNumber index, 0
-		max= Math.abs _.forceNumber max
+		return false if 0 is index= types.forceNumber index, 0
+		max= Math.abs types.forceNumber max
 		if Math.abs( index ) <= max
 			return index- 1 if index > 0
 			return max+ index
@@ -183,12 +105,18 @@ class _ extends Types
 	@sortNoDupAndReverse: ( array, maxLength ) ->
 		processed= []
 		for value, index in array
-			value= _.forceNumber value
+			value= types.forceNumber value
 			continue if value.void
 			if value <= maxLength
 				value= _.positiveIndex value, maxLength
-			processed.push _.forceNumber value, 0
+			processed.push types.forceNumber value, 0
 		return _.noDupAndReverse _.insertSort processed
+
+	constructor: ->
+
+
+for type of types then _[ type ] = types[ type ]
+
 
 #																	Chars (selection of chars.js)
 
@@ -214,6 +142,9 @@ class Chars extends _
 		max= _.limitNumber( range[1], range )
 		return Chars.ascii _.randomNumber min, max
 
+	constructor: ->
+		super()
+
 # end of Chars
 
 #																		Strings
@@ -231,6 +162,7 @@ class Strings_
 		else if _.isString( args[0] ) then for arg in args
 			string= Strings.replace string, arg, arg[ caseMethod ](), 'gi'
 		return string
+
 
 class Strings extends Chars
 
@@ -470,6 +402,7 @@ class Strings extends Chars
 
 
 	constructor: ->
+		super()
 		@set.apply @, arguments
 		@wrapMethod= null
 		@crop= @slice
@@ -580,7 +513,7 @@ Object.defineProperty Strings::, 'wrap',
 		return @string
 
 # aliases:
-Strings.Types= Types
+Strings.types= types
 Strings.Chars= Chars
 Strings.crop= Strings.slice
 Strings::crop= Strings::slice
@@ -624,9 +557,15 @@ class Words_
 
 	@applyToValidIndex: ( orgIndex, limit, callback ) => callback( index ) if false isnt index= _.positiveIndex orgIndex, limit
 
+
+
 class Words extends Strings
 
-	constructor: -> @set.apply @, arguments
+	constructor: ( args... ) ->
+		super()
+		# @set args...
+		return @set.apply @, arguments
+
 
 	set: ( args... ) ->
 		@words= []
@@ -724,9 +663,9 @@ class Words extends Strings
 	prepend: ->
 		pos= 0
 		for arg in arguments
- 			if '' isnt arg= _.forceString arg
- 				@words.splice( pos, 0, Strings.trim arg )
- 				pos++
+			if '' isnt arg= _.forceString arg
+				@words.splice( pos, 0, Strings.trim arg )
+				pos++
 		return @
 
 	insert: ( index, words... ) ->
@@ -773,10 +712,10 @@ Object.defineProperty Words::, 'count', { get: -> @words.length }
 
 Words::unshift= Words::prepend
 
-Words.flexArgs= Types.intoArray
+Words.flexArgs= types.intoArray
 
 Words.Strings	= Strings
-Words.Types		= Types
+Words.types		= types
 Words.Chars		= Chars
 
 
@@ -784,7 +723,7 @@ if define? and ( 'function' is typeof define ) and define.amd
 	define 'words', [], -> Words
 else if window?
 	window.Words	= Words
-	window.Types	= Types
+	window.types	= types
 	window.Strings	= Strings
 else if module?
 	module.exports	= Words

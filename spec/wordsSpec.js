@@ -1,6 +1,7 @@
+const Words= require( '../words.js' );
+const _ = Strings = Words.Strings;
 
-//
-var _= Strings= Words.Strings;
+
 describe("new Words and .set( strings )", function() {
 
     it("should return an empty string if no or invalid arguments are given", function(){
@@ -96,9 +97,6 @@ describe("get( indices )", function() {
         result= words.get( 1, -4, 1 );
         expect( result ).toBe( 'testing testing testing' );
 
-        result= words.get( [2], [3] );
-        expect( result ).toBe( 'get 4' );
-
         result= words.get( '4', '1' );
         expect( result ).toBe( 'now testing' );
 
@@ -123,6 +121,7 @@ describe("xs( callback )", function() {
     });
 
     it("should not change @words if invalid input is given", function(){
+		words.set('testing xs now');
 
         result= words.xs( null ).$;
         expect( result ).toBe( 'testing xs now' );
@@ -141,10 +140,12 @@ describe("xs( callback )", function() {
     });
 
     it("should return a string with all 't's removed", function(){
+		  words.set('testing xs now');
+
         result= words.xs( function(word){
             if ( Strings.contains(word, 't') )
                 return Strings.remove(word, 't');
-            return true;
+            return word;
         }).$;
         expect( result ).toBe( 'esing xs now' );
     });
@@ -549,10 +550,6 @@ describe("pop( amount )", function() {
         result= words.$
         expect( result ).toBe( 'pop some words' );
 
-        words.set('pop some words from this string');
-        words.pop( [5] );
-        result= words.$
-        expect( result ).toBe( 'pop' );
     });
 
     it("should return the popped words in reversed order, as space delimited string", function(){
@@ -572,10 +569,6 @@ describe("pop( amount )", function() {
         words.set('pop some words from this string');
         result= words.pop( '-3px' );
         expect( result ).toBe( 'from this string' );
-
-        words.set('pop some words from this string');
-        result= words.pop( [5] );
-        expect( result ).toBe( 'some words from this string' );
     });
 
 });

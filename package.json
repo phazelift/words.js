@@ -1,10 +1,12 @@
 {
   "name": "words.js",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A library/toolbox for working with words and strings.",
   "main": "words.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "uglify": "uglifyjs words.js -c -m -o words.min.js",
+    "build": "coffee -c --transpile words.coffee && npm run uglify",
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,12 @@
     "url": "https://github.com/phazelift/words.js/issues"
   },
   "homepage": "https://github.com/phazelift/words.js",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "types.js": "latest"
+  },
+  "devDependencies": {
+    "@babel/core": "latest",
+    "@babel/preset-env": "latest",
+    "jasmine": "latest"
+  }
 }
