@@ -37,10 +37,10 @@ words.set('or shuffle specific words').shuffle(2, 3);
 console.log( words.$ );
 // or seuhlff fiiespcc words (pseudo random)
 
-words.set('.startsWith searches for the first(delimiting) space after the first word');
-console.log( words.startsWith('Words.') );
+words.set('.startsWith searches for matching complete words');
+console.log( words.startsWith('.startsWith search') );
 // false
-console.log( words.startsWith('Words.startsWith searches') );
+console.log( words.startsWith('.startsWith searches') );
 // true
 
 // more examples below in the API
