@@ -1,6 +1,6 @@
 {
   "name": "words.js",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A library/toolbox for working with words and strings.",
   "main": "words.min.js",
   "scripts": {
