@@ -1,10 +1,10 @@
 {
   "name": "words.js",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A library/toolbox for working with words and strings.",
   "main": "words.min.js",
   "scripts": {
-    "uglify": "uglifyjs words.js -c -m -o words.min.js",
+	 "uglify": "terser words.js -c -m -o words.min.js",
     "build": "coffee -c --transpile words.coffee && npm run uglify",
     "test": "jasmine"
   },
@@ -22,7 +22,7 @@
     "manipulation",
     "library"
   ],
-  "author": "Dennis Raymondo <phazelift@gmail.com> (https://github.com/phazelift/)",
+  "author": "dennis raymondo van der sluis",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/phazelift/words.js/issues"
